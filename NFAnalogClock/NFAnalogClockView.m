@@ -7,6 +7,7 @@
 //
 
 #import "NFAnalogClockView.h"
+#import "MathGeometry.h"
 
 @implementation NFAnalogClockView
 
@@ -17,6 +18,8 @@
 }
 
 - (void)loadDefaultData {
+    
+    self.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5];
     
     // hour
     self.hourDialColor = [UIColor lightGrayColor];
@@ -84,13 +87,14 @@
 - (void)drawMinuteDialAtCenterPoint:(CGPoint)center {
     
     for (int i = 0; i < 60; i++) {
+        if (i % 5 == 0) { continue; }
         
         CGFloat angle = ToRadians(6 * i);
         CGPoint startPoint = PolarToDecart(center, self.radius - self.minDialLength, angle);
         CGPoint endPoint = PolarToDecart(center, self.radius, angle);
         
-        [self.hourDialColor setFill];
-        [self.hourDialColor setStroke];
+        [self.minDialColor setFill];
+        [self.minDialColor setStroke];
         
         [self drawPinAtStartPoint:startPoint endPoint:endPoint dialWidth:self.minDialWidth];
     }
@@ -99,13 +103,14 @@
 - (void)drawSecondDialAtCenterPoint:(CGPoint)center {
     
     for (int i = 0; i < 360; i++) {
-        
+        if (i % 6 == 0) { continue; }
+
         CGFloat angle = ToRadians(1 * i);
         CGPoint startPoint = PolarToDecart(center, self.radius - self.secDialLength, angle);
         CGPoint endPoint = PolarToDecart(center, self.radius, angle);
         
-        [self.hourDialColor setFill];
-        [self.hourDialColor setStroke];
+        [self.secDialColor setFill];
+        [self.secDialColor setStroke];
         
         [self drawPinAtStartPoint:startPoint endPoint:endPoint dialWidth:self.secDialWidth];
     }
