@@ -51,4 +51,12 @@
 @property (nonatomic, strong) UIFont *hourLabelFont;
 @property (nonatomic, strong) UIColor *hourLabelColor;
 
+@property (nonatomic) CGFloat currentHour;
+@property (nonatomic) CGFloat currentMinute;
+@property (nonatomic) CGFloat currentSecond;
+
+#pragma mark - Controls
+
+- (void)setCurrentClockTimeWithHour:(CGFloat)hour minute:(CGFloat)minute second:(CGFloat)second;
+
 @end

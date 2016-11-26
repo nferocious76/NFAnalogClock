@@ -6,7 +6,7 @@
 //  Copyright © 2016 Neil Francis Hipona. All rights reserved.
 //
 
-#import "MathGeometry.h"
+#import "NFMathGeometry.h"
 
 struct PolarCoordinate PolarCoordinateMake(CGFloat radius, CGFloat angle)
 {

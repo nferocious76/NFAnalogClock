@@ -7,8 +7,12 @@
 //
 
 #import "ViewController.h"
+#import "NFAnalogClockTimeManager.h"
 
 @interface ViewController ()
+
+@property (weak, nonatomic) IBOutlet NFAnalogClockView *clockView;
+@property (nonatomic, strong) NFAnalogClockTimeManager *manager;
 
 @end
 
@@ -17,6 +21,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    self.manager = [[NFAnalogClockTimeManager alloc] initWithAnalogClockView:self.clockView];
 }
 
 

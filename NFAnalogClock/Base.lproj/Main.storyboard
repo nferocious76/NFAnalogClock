@@ -34,6 +34,9 @@
                             <constraint firstAttribute="trailing" secondItem="YxB-qV-lc0" secondAttribute="trailing" constant="20" id="pUf-Ex-spx"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="clockView" destination="YxB-qV-lc0" id="YMf-nx-fVQ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

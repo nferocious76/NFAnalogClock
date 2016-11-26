@@ -7,7 +7,7 @@
 //
 
 #import "NFAnalogClockView.h"
-#import "MathGeometry.h"
+#import "NFMathGeometry.h"
 
 @implementation NFAnalogClockView
 
@@ -57,6 +57,10 @@
     
     self.hourLabelFont = [UIFont systemFontOfSize:12];
     self.hourLabelColor = [UIColor blackColor];
+    
+    self.currentHour = 0;
+    self.currentMinute = 0;
+    self.currentSecond = 0;
 }
 
 #pragma mark - Drawing
@@ -90,9 +94,9 @@
     }
     
     // clock's hand
-    [self drawClockHourHand:3];
-    [self drawClockMinHand:19];
-    [self drawClockSecHand:46];
+    [self drawClockHourHand:self.currentHour];
+    [self drawClockMinHand:self.currentMinute];
+    [self drawClockSecHand:self.currentSecond];
 }
 
 #pragma mark - Setters
@@ -205,8 +209,9 @@
     // canvas center
     CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
 
+    CGFloat hourRatio = hour + (self.currentMinute / 60);
     CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
-    CGFloat angle = ToRadians(30 * hour) - angleCorrection;
+    CGFloat angle = ToRadians(30 * hourRatio) - angleCorrection;
     CGPoint startPoint = PolarToDecart(center, -(self.hourHandLength * 0.15), angle);
     CGPoint endPoint = PolarToDecart(center, self.hourHandLength, angle);
 
@@ -246,6 +251,16 @@
     [self.secHandColor setStroke];
     
     [self drawPinAtStartPoint:startPoint endPoint:endPoint width:self.secHandWidth capStype:kCGLineCapRound];
+}
+
+#pragma mark - Controls
+
+- (void)setCurrentClockTimeWithHour:(CGFloat)hour minute:(CGFloat)minute second:(CGFloat)second {
+    self.currentHour = hour;
+    self.currentMinute = minute;
+    self.currentSecond = second;
+    
+    [self setNeedsDisplay];
 }
 
 
