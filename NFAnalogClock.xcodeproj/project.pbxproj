@@ -1,0 +1,328 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F5034AA41DE9716500AB9D6C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F5034AA31DE9716500AB9D6C /* main.m */; };
+		F5034AA71DE9716500AB9D6C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F5034AA61DE9716500AB9D6C /* AppDelegate.m */; };
+		F5034AAA1DE9716500AB9D6C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5034AA91DE9716500AB9D6C /* ViewController.m */; };
+		F5034AAD1DE9716500AB9D6C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5034AAB1DE9716500AB9D6C /* Main.storyboard */; };
+		F5034AAF1DE9716500AB9D6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5034AAE1DE9716500AB9D6C /* Assets.xcassets */; };
+		F5034AB21DE9716500AB9D6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5034AB01DE9716500AB9D6C /* LaunchScreen.storyboard */; };
+		F5034ABB1DE9718300AB9D6C /* NFAnalogClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5034ABA1DE9718300AB9D6C /* NFAnalogClockView.m */; };
+		F5034ABE1DE971C000AB9D6C /* MathGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = F5034ABD1DE971C000AB9D6C /* MathGeometry.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F5034A9F1DE9716500AB9D6C /* NFAnalogClock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFAnalogClock.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F5034AA31DE9716500AB9D6C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F5034AA51DE9716500AB9D6C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		F5034AA61DE9716500AB9D6C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		F5034AA81DE9716500AB9D6C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		F5034AA91DE9716500AB9D6C /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		F5034AAC1DE9716500AB9D6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F5034AAE1DE9716500AB9D6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F5034AB11DE9716500AB9D6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F5034AB31DE9716500AB9D6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F5034AB91DE9718300AB9D6C /* NFAnalogClockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFAnalogClockView.h; sourceTree = "<group>"; };
+		F5034ABA1DE9718300AB9D6C /* NFAnalogClockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFAnalogClockView.m; sourceTree = "<group>"; };
+		F5034ABC1DE971C000AB9D6C /* MathGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathGeometry.h; sourceTree = "<group>"; };
+		F5034ABD1DE971C000AB9D6C /* MathGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MathGeometry.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F5034A9C1DE9716500AB9D6C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F5034A961DE9716500AB9D6C = {
+			isa = PBXGroup;
+			children = (
+				F5034AA11DE9716500AB9D6C /* NFAnalogClock */,
+				F5034AA01DE9716500AB9D6C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F5034AA01DE9716500AB9D6C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F5034A9F1DE9716500AB9D6C /* NFAnalogClock.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F5034AA11DE9716500AB9D6C /* NFAnalogClock */ = {
+			isa = PBXGroup;
+			children = (
+				F5034AA51DE9716500AB9D6C /* AppDelegate.h */,
+				F5034AA61DE9716500AB9D6C /* AppDelegate.m */,
+				F5034AA81DE9716500AB9D6C /* ViewController.h */,
+				F5034AA91DE9716500AB9D6C /* ViewController.m */,
+				F5034AB91DE9718300AB9D6C /* NFAnalogClockView.h */,
+				F5034ABA1DE9718300AB9D6C /* NFAnalogClockView.m */,
+				F5034ABC1DE971C000AB9D6C /* MathGeometry.h */,
+				F5034ABD1DE971C000AB9D6C /* MathGeometry.m */,
+				F5034AAB1DE9716500AB9D6C /* Main.storyboard */,
+				F5034AAE1DE9716500AB9D6C /* Assets.xcassets */,
+				F5034AB01DE9716500AB9D6C /* LaunchScreen.storyboard */,
+				F5034AB31DE9716500AB9D6C /* Info.plist */,
+				F5034AA21DE9716500AB9D6C /* Supporting Files */,
+			);
+			path = NFAnalogClock;
+			sourceTree = "<group>";
+		};
+		F5034AA21DE9716500AB9D6C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F5034AA31DE9716500AB9D6C /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F5034A9E1DE9716500AB9D6C /* NFAnalogClock */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F5034AB61DE9716500AB9D6C /* Build configuration list for PBXNativeTarget "NFAnalogClock" */;
+			buildPhases = (
+				F5034A9B1DE9716500AB9D6C /* Sources */,
+				F5034A9C1DE9716500AB9D6C /* Frameworks */,
+				F5034A9D1DE9716500AB9D6C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NFAnalogClock;
+			productName = NFAnalogClock;
+			productReference = F5034A9F1DE9716500AB9D6C /* NFAnalogClock.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F5034A971DE9716500AB9D6C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = "Neil Francis Hipona";
+				TargetAttributes = {
+					F5034A9E1DE9716500AB9D6C = {
+						CreatedOnToolsVersion = 8.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = F5034A9A1DE9716500AB9D6C /* Build configuration list for PBXProject "NFAnalogClock" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F5034A961DE9716500AB9D6C;
+			productRefGroup = F5034AA01DE9716500AB9D6C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F5034A9E1DE9716500AB9D6C /* NFAnalogClock */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F5034A9D1DE9716500AB9D6C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F5034AB21DE9716500AB9D6C /* LaunchScreen.storyboard in Resources */,
+				F5034AAF1DE9716500AB9D6C /* Assets.xcassets in Resources */,
+				F5034AAD1DE9716500AB9D6C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F5034A9B1DE9716500AB9D6C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F5034AAA1DE9716500AB9D6C /* ViewController.m in Sources */,
+				F5034AA71DE9716500AB9D6C /* AppDelegate.m in Sources */,
+				F5034ABE1DE971C000AB9D6C /* MathGeometry.m in Sources */,
+				F5034AA41DE9716500AB9D6C /* main.m in Sources */,
+				F5034ABB1DE9718300AB9D6C /* NFAnalogClockView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		F5034AAB1DE9716500AB9D6C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F5034AAC1DE9716500AB9D6C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F5034AB01DE9716500AB9D6C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F5034AB11DE9716500AB9D6C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F5034AB41DE9716500AB9D6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F5034AB51DE9716500AB9D6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F5034AB71DE9716500AB9D6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = NFAnalogClock/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.NFerocious.NFAnalogClock;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F5034AB81DE9716500AB9D6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = NFAnalogClock/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.NFerocious.NFAnalogClock;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F5034A9A1DE9716500AB9D6C /* Build configuration list for PBXProject "NFAnalogClock" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F5034AB41DE9716500AB9D6C /* Debug */,
+				F5034AB51DE9716500AB9D6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F5034AB61DE9716500AB9D6C /* Build configuration list for PBXNativeTarget "NFAnalogClock" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F5034AB71DE9716500AB9D6C /* Debug */,
+				F5034AB81DE9716500AB9D6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F5034A971DE9716500AB9D6C /* Project object */;
+}
