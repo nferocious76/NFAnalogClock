@@ -168,6 +168,24 @@
     [self setNeedsDisplay];
 }
 
+- (void)setCurrentHour:(CGFloat)currentHour {
+    _currentHour = currentHour;
+    
+    [self setNeedsDisplay];
+}
+
+- (void)setCurrentMinute:(CGFloat)currentMinute {
+    _currentMinute = currentMinute;
+    
+    [self setNeedsDisplay];
+}
+
+- (void)setCurrentSecond:(CGFloat)currentSecond {
+    _currentSecond = currentSecond;
+    
+    [self setNeedsDisplay];
+}
+
 - (void)setDateTimeLabel:(NSString *)dateTimeLabel {
     _dateTimeLabel = dateTimeLabel;
     
@@ -319,6 +337,26 @@
     [self.secHandColor setStroke];
     
     [self drawPinAtStartPoint:startPoint endPoint:endPoint width:self.secHandWidth capStype:kCGLineCapRound];
+}
+
+#pragma mark - Touches
+
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    
+    return YES;
+}
+
+- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    
+    return YES;
+}
+
+- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    
+}
+
+- (void)cancelTrackingWithEvent:(UIEvent *)event {
+    
 }
 
 #pragma mark - Controls

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NFAnalogClockView : UIView
+@interface NFAnalogClockView : UIControl
 
 #pragma mark - Clock Design
 

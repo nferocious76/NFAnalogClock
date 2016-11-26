@@ -22,20 +22,61 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YxB-qV-lc0" customClass="NFAnalogClockView">
-                                <rect key="frame" x="20" y="70" width="335" height="547"/>
+                                <rect key="frame" x="20" y="70" width="335" height="527"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Hour" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Uww-eM-sKC">
+                                <rect key="frame" x="20" y="617" width="106.5" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="gaw-sb-Fx0"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Minute" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="D0o-PV-z3E">
+                                <rect key="frame" x="134.5" y="617" width="106" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="RZs-Il-hDJ"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Seconds" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iW1-0d-Ei7">
+                                <rect key="frame" x="248.5" y="617" width="106.5" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="QXP-4r-vqU"/>
+                                </connections>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="YxB-qV-lc0" secondAttribute="bottom" constant="50" id="CPi-MF-bS6"/>
+                            <constraint firstItem="D0o-PV-z3E" firstAttribute="top" secondItem="iW1-0d-Ei7" secondAttribute="top" id="3Tc-bR-fUR"/>
+                            <constraint firstItem="D0o-PV-z3E" firstAttribute="leading" secondItem="Uww-eM-sKC" secondAttribute="trailing" constant="8" id="5EV-g0-7WX"/>
+                            <constraint firstAttribute="trailing" secondItem="iW1-0d-Ei7" secondAttribute="trailing" constant="20" id="BsM-mG-yQX"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="YxB-qV-lc0" secondAttribute="bottom" constant="70" id="CPi-MF-bS6"/>
+                            <constraint firstItem="D0o-PV-z3E" firstAttribute="width" secondItem="iW1-0d-Ei7" secondAttribute="width" id="SmC-e4-y04"/>
+                            <constraint firstItem="Uww-eM-sKC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="TfD-TS-rDO"/>
+                            <constraint firstItem="D0o-PV-z3E" firstAttribute="bottom" secondItem="iW1-0d-Ei7" secondAttribute="bottom" id="Uu8-Vv-Dwe"/>
                             <constraint firstItem="YxB-qV-lc0" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="50" id="fsD-b2-g7m"/>
+                            <constraint firstItem="iW1-0d-Ei7" firstAttribute="leading" secondItem="D0o-PV-z3E" secondAttribute="trailing" constant="8" id="glG-ja-2XF"/>
                             <constraint firstItem="YxB-qV-lc0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="jF5-Ob-EP9"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Uww-eM-sKC" secondAttribute="bottom" constant="20" id="mpl-TG-chc"/>
+                            <constraint firstItem="Uww-eM-sKC" firstAttribute="bottom" secondItem="D0o-PV-z3E" secondAttribute="bottom" id="nDt-uE-IDw"/>
                             <constraint firstAttribute="trailing" secondItem="YxB-qV-lc0" secondAttribute="trailing" constant="20" id="pUf-Ex-spx"/>
+                            <constraint firstItem="Uww-eM-sKC" firstAttribute="top" secondItem="D0o-PV-z3E" secondAttribute="top" id="rX8-wg-PsR"/>
+                            <constraint firstItem="Uww-eM-sKC" firstAttribute="width" secondItem="D0o-PV-z3E" secondAttribute="width" id="uS6-QO-ZC9"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="clockView" destination="YxB-qV-lc0" id="YMf-nx-fVQ"/>
+                        <outlet property="hourInputField" destination="Uww-eM-sKC" id="NEd-bl-QsK"/>
+                        <outlet property="minuteInputField" destination="D0o-PV-z3E" id="euh-Mi-eRj"/>
+                        <outlet property="secondInputField" destination="iW1-0d-Ei7" id="znz-y7-Cxc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
