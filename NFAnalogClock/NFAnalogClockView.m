@@ -90,9 +90,9 @@
     }
     
     // clock's hand
-    [self drawClockHourHand];
-    [self drawClockMinHand];
-    [self drawClockSecHand];
+    [self drawClockHourHand:3];
+    [self drawClockMinHand:19];
+    [self drawClockSecHand:46];
 }
 
 #pragma mark - Setters
@@ -200,12 +200,13 @@
 
 /** Clock Hands */
 
-- (void)drawClockHourHand {
+- (void)drawClockHourHand:(CGFloat)hour {
     
     // canvas center
     CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
 
-    CGFloat angle = ToRadians(30 * 3);
+    CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
+    CGFloat angle = ToRadians(30 * hour) - angleCorrection;
     CGPoint startPoint = PolarToDecart(center, -(self.hourHandLength * 0.15), angle);
     CGPoint endPoint = PolarToDecart(center, self.hourHandLength, angle);
 
@@ -215,12 +216,13 @@
     [self drawPinAtStartPoint:startPoint endPoint:endPoint width:self.hourHandWidth capStype:kCGLineCapRound];
 }
 
-- (void)drawClockMinHand {
+- (void)drawClockMinHand:(CGFloat)min {
     
     // canvas center
     CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
     
-    CGFloat angle = ToRadians(60 * 3);
+    CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
+    CGFloat angle = ToRadians(6 * min) - angleCorrection;
     CGPoint startPoint = PolarToDecart(center, -(self.minHandLength * 0.25), angle);
     CGPoint endPoint = PolarToDecart(center, self.minHandLength, angle);
     
@@ -230,12 +232,13 @@
     [self drawPinAtStartPoint:startPoint endPoint:endPoint width:self.minHandWidth capStype:kCGLineCapRound];
 }
 
-- (void)drawClockSecHand {
+- (void)drawClockSecHand:(CGFloat)sec {
     
     // canvas center
     CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
     
-    CGFloat angle = ToRadians(60 * 1);
+    CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
+    CGFloat angle = ToRadians(6 * sec) - angleCorrection;
     CGPoint startPoint = PolarToDecart(center, -(self.secHandLength * 0.3), angle);
     CGPoint endPoint = PolarToDecart(center, self.secHandLength, angle);
     
