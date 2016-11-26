@@ -9,6 +9,23 @@
 #import "NFAnalogClockView.h"
 #import "NFMathGeometry.h"
 
+@interface NFAnalogClockView()
+
+// hour
+@property (nonatomic) CGFloat hourHandLength;
+
+// minutes
+@property (nonatomic) CGFloat minHandLength;
+
+// seconds
+@property (nonatomic) CGFloat secHandLength;
+
+// clock's radius
+@property (nonatomic) CGFloat radius;
+@property (nonatomic) CGFloat dateTimeCanvasPercent;
+
+@end
+
 @implementation NFAnalogClockView
 
 - (void)awakeFromNib {
@@ -22,7 +39,7 @@
     self.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5];
 
     // default radius
-    self.radius = self.frame.size.height > self.frame.size.width ? self.frame.size.width / 2 : self.frame.size.height / 2;
+    self.radius = (self.frame.size.height > self.frame.size.width ? self.frame.size.width / 2 : self.frame.size.height / 2) - 10;
 
     // hour
     self.hourDialColor = [UIColor lightGrayColor];
@@ -54,13 +71,21 @@
     self.enableMinDial = YES;
     self.enableSecDial = YES;
     self.enableClockLabel = YES;
+    self.enableDateTimeLabel = YES;
     
     self.hourLabelFont = [UIFont systemFontOfSize:12];
     self.hourLabelColor = [UIColor blackColor];
     
+    self.dateTimeLabelFont = [UIFont systemFontOfSize:16];
+    self.dateTimeLabelColor = [UIColor redColor];
+
     self.currentHour = 0;
     self.currentMinute = 0;
     self.currentSecond = 0;
+    
+    self.dateTimeCanvasPercent = 0.20;
+    
+    self.dateTimeLabel = [[NSDate date] description];
 }
 
 #pragma mark - Drawing
@@ -76,7 +101,14 @@
     CGContextSetFillColorWithColor(context, self.backgroundColor.CGColor);
     
     // canvas center
-    CGPoint canvasCenterPoint = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
+    CGPoint canvasCenterPoint = CGPointZero;
+    
+    if (self.enableDateTimeLabel) {
+        CGFloat canvasHeight = self.frame.size.height - (self.frame.size.height * self.dateTimeCanvasPercent);
+        canvasCenterPoint = CGPointMake(self.frame.size.width / 2, canvasHeight / 2);
+    }else{
+        canvasCenterPoint = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
+    }
     
     // draw hour dial pins
     [self drawHourDialAtCenterPoint:canvasCenterPoint];
@@ -94,9 +126,13 @@
     }
     
     // clock's hand
-    [self drawClockHourHand:self.currentHour];
-    [self drawClockMinHand:self.currentMinute];
-    [self drawClockSecHand:self.currentSecond];
+    [self drawClockHourHandAtCenterPoint:canvasCenterPoint hour:self.currentHour];
+    [self drawClockMinHandAtCenterPoint:canvasCenterPoint minute:self.currentMinute];
+    [self drawClockSecHandAtCenterPoint:canvasCenterPoint second:self.currentSecond];
+    
+    if (self.enableDateTimeLabel) {
+        [self drawClockDateTimeLabel:self.dateTimeLabel];
+    }
 }
 
 #pragma mark - Setters
@@ -109,6 +145,31 @@
 
 - (void)setEnableSecDial:(BOOL)enableSecDial {
     _enableSecDial = enableSecDial;
+    
+    [self setNeedsDisplay];
+}
+
+- (void)setEnableClockLabel:(BOOL)enableClockLabel {
+    _enableClockLabel = enableClockLabel;
+    
+    [self setNeedsDisplay];
+}
+
+- (void)setEnableDateTimeLabel:(BOOL)enableDateTimeLabel {
+    _enableDateTimeLabel = enableDateTimeLabel;
+    
+    if (enableDateTimeLabel) {
+        CGFloat canvasHeight = self.frame.size.height - (self.frame.size.height * self.dateTimeCanvasPercent);
+        self.radius = (canvasHeight > self.frame.size.width ? self.frame.size.width / 2 : canvasHeight / 2) - 10;
+    }else{
+        self.radius = (self.frame.size.height > self.frame.size.width ? self.frame.size.width / 2 : self.frame.size.height / 2) - 10;
+    }
+
+    [self setNeedsDisplay];
+}
+
+- (void)setDateTimeLabel:(NSString *)dateTimeLabel {
+    _dateTimeLabel = dateTimeLabel;
     
     [self setNeedsDisplay];
 }
@@ -202,12 +263,25 @@
     }
 }
 
+- (void)drawClockDateTimeLabel:(NSString *)dateTimeLabel {
+
+    NSDictionary *fontAttribute = @{NSFontAttributeName: self.dateTimeLabelFont, NSForegroundColorAttributeName: self.dateTimeLabelColor};
+    CGSize hourLabelSize = [dateTimeLabel sizeWithAttributes:fontAttribute];
+    
+    CGFloat canvasHeight = self.frame.size.height - (self.frame.size.height * self.dateTimeCanvasPercent);
+    CGFloat dateTimeCanvasHeight = self.frame.size.height * self.dateTimeCanvasPercent;
+    CGFloat canvasOriginY = (dateTimeCanvasHeight / 2) - (hourLabelSize.height / 2);
+    
+    CGFloat originX = (self.frame.size.width / 2) - (hourLabelSize.width / 2);
+    CGFloat originY = canvasHeight + canvasOriginY;
+    CGRect hourLabelRect = CGRectMake(originX, originY, hourLabelSize.width, hourLabelSize.height);
+    
+    [dateTimeLabel drawInRect:hourLabelRect withAttributes:fontAttribute];
+}
+
 /** Clock Hands */
 
-- (void)drawClockHourHand:(CGFloat)hour {
-    
-    // canvas center
-    CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
+- (void)drawClockHourHandAtCenterPoint:(CGPoint)center hour:(CGFloat)hour {
 
     CGFloat hourRatio = hour + (self.currentMinute / 60);
     CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
@@ -221,10 +295,7 @@
     [self drawPinAtStartPoint:startPoint endPoint:endPoint width:self.hourHandWidth capStype:kCGLineCapRound];
 }
 
-- (void)drawClockMinHand:(CGFloat)min {
-    
-    // canvas center
-    CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
+- (void)drawClockMinHandAtCenterPoint:(CGPoint)center minute:(CGFloat)min {
     
     CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
     CGFloat angle = ToRadians(6 * min) - angleCorrection;
@@ -237,11 +308,8 @@
     [self drawPinAtStartPoint:startPoint endPoint:endPoint width:self.minHandWidth capStype:kCGLineCapRound];
 }
 
-- (void)drawClockSecHand:(CGFloat)sec {
-    
-    // canvas center
-    CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
-    
+- (void)drawClockSecHandAtCenterPoint:(CGPoint)center second:(CGFloat)sec {
+
     CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
     CGFloat angle = ToRadians(6 * sec) - angleCorrection;
     CGPoint startPoint = PolarToDecart(center, -(self.secHandLength * 0.3), angle);
@@ -263,5 +331,9 @@
     [self setNeedsDisplay];
 }
 
+- (void)refreshView {
+    
+    [self setNeedsDisplay];
+}
 
 @end

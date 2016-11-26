@@ -32,4 +32,13 @@
 }
 
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    
+    self.clockView.enableDateTimeLabel = !self.clockView.enableDateTimeLabel;
+    self.clockView.enableClockLabel = !self.clockView.enableClockLabel;
+    self.clockView.enableMinDial = !self.clockView.enableMinDial;
+    self.clockView.enableSecDial = !self.clockView.enableSecDial;
+
+}
+
 @end

@@ -11,9 +11,7 @@
 @interface NFAnalogClockTimeManager()
 
 @property (nonatomic, strong) NFAnalogClockView *clockView;
-
 @property (nonatomic, strong) NSTimer *timeScheduler;
-@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -24,6 +22,7 @@
     if (self = [super init]) {
         self.clockView = clockView;
         self.dateFormatter = [[NSDateFormatter alloc] init];
+        self.dateFormatter.dateFormat = @"dd MMMM yyyy HH:mm:ss";
         
         [self startTime];
     }
@@ -51,12 +50,14 @@
 
 - (void)updateClock {
     
-    NSDate *now = [NSDate date];
+    NSDate *dateNow = [NSDate date];
+    NSString *currentDateTime = [self.dateFormatter stringFromDate:dateNow];
     
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond) fromDate:now];
+    NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond) fromDate:dateNow];
     
     [self.clockView setCurrentClockTimeWithHour:[components hour] minute:[components minute] second:[components second]];
+    [self.clockView setDateTimeLabel:currentDateTime];
 }
 
 @end

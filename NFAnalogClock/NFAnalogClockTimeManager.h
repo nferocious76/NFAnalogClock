@@ -12,6 +12,8 @@
 
 @interface NFAnalogClockTimeManager : NSObject
 
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+
 -(instancetype)initWithAnalogClockView:(NFAnalogClockView *)clockView;
 
 - (void)startTime;
