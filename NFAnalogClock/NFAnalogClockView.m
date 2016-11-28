@@ -392,38 +392,39 @@
     CGPoint canvasCenterPoint = [self  canvasCenterWithDateTimeEnabled:self.enableDateTimeLabel];
     struct PolarCoordinate polar = DecartToPolar(canvasCenterPoint, touchPoint);
 
-    NSLog(@"touch angle: %f", polar.angle);
-
     CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
     CGFloat fullCircleAngle = ToRadians(360);
     CGFloat correctedCircleAngle = fullCircleAngle - angleCorrection;
-
+    
+    BOOL isValid = NO;
+    
     if (isMinHand) {
         CGFloat angle = ToRadians(6 * self.currentMinute) + correctedCircleAngle;
         CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
         CGFloat angleDiff = (polar.angle - calculatedAngle);
-        BOOL isValid = angleDiff >= -0.03 && angleDiff <= 0.03;
+        isValid = angleDiff >= -0.03 && angleDiff <= 0.03;
         
         if (isValid) {
             NSLog(@"valid min touch angle: %f -- min angle: %f", polar.angle, angle);
         }
 
-        return isValid;
     }else{
         CGFloat hourRatio = self.currentHour + (self.currentMinute / 60);
         CGFloat angle = ToRadians(30 * hourRatio) + correctedCircleAngle;
         CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
         CGFloat angleDiff = (polar.angle - calculatedAngle);
-        BOOL isValid = angleDiff >= -0.05 && angleDiff <= 0.05;
+        isValid = angleDiff >= -0.05 && angleDiff <= 0.05;
         
         if (isValid) {
             NSLog(@"valid hour touch angle: %f -- hour angle: %f", polar.angle, angle);
         }
-        
-        return isValid;
     }
 
-    return NO;
+    if (!isValid) {
+        NSLog(@"touch angle: %f", polar.angle);
+    }
+    
+    return isValid;
 }
 
 - (void)calculateAngleForMinuteHand:(BOOL)isMinHand atTouchPoint:(CGPoint)touchPoint {
@@ -437,13 +438,13 @@
     CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
 
     CGFloat percentRatio = calculatedAngle / fullCircleAngle;
+    CGFloat fullCircleDegrees = 360 * percentRatio;
 
     if (isMinHand) {
-        CGFloat fullCircleDegrees = 360 * percentRatio;
         CGFloat minute = roundf(fullCircleDegrees / 6);
         self.currentMinute = minute;
     }else{
-        CGFloat fullHours = calculatedAngle / fullCircleAngle;
+        CGFloat fullHours = (fullCircleDegrees / 6) / 5;
         CGFloat hour = truncf(fullHours);
         CGFloat minute = roundf((fullHours - hour) * 60);
         

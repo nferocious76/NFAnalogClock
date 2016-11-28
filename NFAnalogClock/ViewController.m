@@ -33,7 +33,7 @@
     [self.minuteInputField addTarget:self action:@selector(textFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
     [self.secondInputField addTarget:self action:@selector(textFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
 
-    [self.manager stopTime];
+//    [self.manager stopTime];
 }
 
 
