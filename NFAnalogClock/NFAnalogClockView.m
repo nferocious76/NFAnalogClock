@@ -24,6 +24,8 @@
 @property (nonatomic) CGFloat radius;
 @property (nonatomic) CGFloat dateTimeCanvasPercent;
 
+@property (nonatomic) BOOL isMinHandActive;
+
 @end
 
 @implementation NFAnalogClockView
@@ -101,14 +103,7 @@
     CGContextSetFillColorWithColor(context, self.backgroundColor.CGColor);
     
     // canvas center
-    CGPoint canvasCenterPoint = CGPointZero;
-    
-    if (self.enableDateTimeLabel) {
-        CGFloat canvasHeight = self.frame.size.height - (self.frame.size.height * self.dateTimeCanvasPercent);
-        canvasCenterPoint = CGPointMake(self.frame.size.width / 2, canvasHeight / 2);
-    }else{
-        canvasCenterPoint = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
-    }
+    CGPoint canvasCenterPoint = [self canvasCenterWithDateTimeEnabled:self.enableDateTimeLabel];
     
     // draw hour dial pins
     [self drawHourDialAtCenterPoint:canvasCenterPoint];
@@ -339,24 +334,124 @@
     [self drawPinAtStartPoint:startPoint endPoint:endPoint width:self.secHandWidth capStype:kCGLineCapRound];
 }
 
+- (CGPoint)canvasCenterWithDateTimeEnabled:(BOOL)enabled {
+    // canvas center
+    CGPoint canvasCenterPoint = CGPointZero;
+    
+    if (enabled) {
+        CGFloat canvasHeight = self.frame.size.height - (self.frame.size.height * self.dateTimeCanvasPercent);
+        canvasCenterPoint = CGPointMake(self.frame.size.width / 2, canvasHeight / 2);
+    }else{
+        canvasCenterPoint = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
+    }
+    
+    return canvasCenterPoint;
+}
+
 #pragma mark - Touches
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    CGPoint touchLocation = [touch locationInView:self];
     
-    return YES;
+    if ([self isTouchPointValid:touchLocation forMinuteHand:YES]) {
+        self.isMinHandActive = YES;
+        
+        return YES;
+    }
+    
+    if ([self isTouchPointValid:touchLocation forMinuteHand:NO]) {
+        self.isMinHandActive = NO;
+        
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    
+    CGPoint touchLocation = [touch locationInView:self];
+    [self calculateAngleForMinuteHand:self.isMinHandActive atTouchPoint:touchLocation];
+
     return YES;
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    
+    CGPoint touchLocation = [touch locationInView:self];
+    self.isMinHandActive = NO;
+
+    NSLog(@"Tracking ended at: %@", NSStringFromCGPoint(touchLocation));
 }
 
 - (void)cancelTrackingWithEvent:(UIEvent *)event {
     
+    NSLog(@"Tracking canceled: %@", event);
+}
+
+- (BOOL)isTouchPointValid:(CGPoint)touchPoint forMinuteHand:(BOOL)isMinHand {
+    // canvas center
+    CGPoint canvasCenterPoint = [self  canvasCenterWithDateTimeEnabled:self.enableDateTimeLabel];
+    struct PolarCoordinate polar = DecartToPolar(canvasCenterPoint, touchPoint);
+
+    NSLog(@"touch angle: %f", polar.angle);
+
+    CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
+    CGFloat fullCircleAngle = ToRadians(360);
+    CGFloat correctedCircleAngle = fullCircleAngle - angleCorrection;
+
+    if (isMinHand) {
+        CGFloat angle = ToRadians(6 * self.currentMinute) + correctedCircleAngle;
+        CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
+        CGFloat angleDiff = (polar.angle - calculatedAngle);
+        BOOL isValid = angleDiff >= -0.03 && angleDiff <= 0.03;
+        
+        if (isValid) {
+            NSLog(@"valid min touch angle: %f -- min angle: %f", polar.angle, angle);
+        }
+
+        return isValid;
+    }else{
+        CGFloat hourRatio = self.currentHour + (self.currentMinute / 60);
+        CGFloat angle = ToRadians(30 * hourRatio) + correctedCircleAngle;
+        CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
+        CGFloat angleDiff = (polar.angle - calculatedAngle);
+        BOOL isValid = angleDiff >= -0.05 && angleDiff <= 0.05;
+        
+        if (isValid) {
+            NSLog(@"valid hour touch angle: %f -- hour angle: %f", polar.angle, angle);
+        }
+        
+        return isValid;
+    }
+
+    return NO;
+}
+
+- (void)calculateAngleForMinuteHand:(BOOL)isMinHand atTouchPoint:(CGPoint)touchPoint {
+    // canvas center
+    CGPoint canvasCenterPoint = [self  canvasCenterWithDateTimeEnabled:self.enableDateTimeLabel];
+    struct PolarCoordinate polar = DecartToPolar(canvasCenterPoint, touchPoint);
+    
+    CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
+    CGFloat fullCircleAngle = ToRadians(360);
+    CGFloat angle = (polar.angle + angleCorrection);
+    CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
+
+    CGFloat percentRatio = calculatedAngle / fullCircleAngle;
+    CGFloat fullCircleDegrees = 360 * percentRatio;
+
+    if (isMinHand) {
+        CGFloat minute = roundf(fullCircleDegrees / 6);
+        self.currentMinute = minute;
+    }else{
+        CGFloat fullHours = fullCircleDegrees / 60;
+        CGFloat hour = truncf(fullHours);
+        CGFloat minute = roundf((fullHours - hour) * 60);
+        
+        self.currentHour = hour;
+        self.currentMinute = minute;
+    }
+    
+    self.currentSecond = 0;
 }
 
 #pragma mark - Controls
