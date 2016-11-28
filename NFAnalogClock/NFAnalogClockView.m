@@ -437,13 +437,13 @@
     CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
 
     CGFloat percentRatio = calculatedAngle / fullCircleAngle;
-    CGFloat fullCircleDegrees = 360 * percentRatio;
 
     if (isMinHand) {
+        CGFloat fullCircleDegrees = 360 * percentRatio;
         CGFloat minute = roundf(fullCircleDegrees / 6);
         self.currentMinute = minute;
     }else{
-        CGFloat fullHours = fullCircleDegrees / 60;
+        CGFloat fullHours = calculatedAngle / fullCircleAngle;
         CGFloat hour = truncf(fullHours);
         CGFloat minute = roundf((fullHours - hour) * 60);
         
