@@ -402,18 +402,21 @@
         CGFloat angle = ToRadians(6 * self.currentMinute) + correctedCircleAngle;
         CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
         CGFloat angleDiff = (polar.angle - calculatedAngle);
-        isValid = angleDiff >= -0.03 && angleDiff <= 0.03;
+        
+        BOOL touchRadius = polar.radius <= self.minHandLength && polar.radius > 0;
+        isValid = angleDiff >= -0.03 && angleDiff <= 0.03 && touchRadius;
         
         if (isValid) {
             NSLog(@"valid min touch angle: %f -- min angle: %f", polar.angle, angle);
         }
-
     }else{
         CGFloat hourRatio = self.currentHour + (self.currentMinute / 60);
         CGFloat angle = ToRadians(30 * hourRatio) + correctedCircleAngle;
         CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
         CGFloat angleDiff = (polar.angle - calculatedAngle);
-        isValid = angleDiff >= -0.05 && angleDiff <= 0.05;
+        
+        BOOL touchRadius = polar.radius <= self.hourHandLength && polar.radius > 0;
+        isValid = angleDiff >= -0.05 && angleDiff <= 0.05 && touchRadius;
         
         if (isValid) {
             NSLog(@"valid hour touch angle: %f -- hour angle: %f", polar.angle, angle);
@@ -421,7 +424,7 @@
     }
 
     if (!isValid) {
-        NSLog(@"touch angle: %f", polar.angle);
+        NSLog(@"invalid touch angle: %f", polar.angle);
     }
     
     return isValid;
