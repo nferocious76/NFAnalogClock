@@ -47,6 +47,9 @@
 @property (nonatomic) CGFloat secDialLength;
 @property (nonatomic) CGFloat secHandWidth;
 
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) NSTimer *timeScheduler;
+
 #pragma mark - Clock Face
 
 // clock's radius

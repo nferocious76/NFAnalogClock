@@ -104,6 +104,9 @@ typedef enum : NSUInteger {
     
     self.dateTimeCanvasPercent = 0.20;
     
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    self.dateFormatter.dateFormat = @"dd MMMM yyyy HH:mm:ss";
+    
     self.dateTimeLabel = [[NSDate date] description];
 }
 

@@ -7,7 +7,8 @@
 //
 
 #import "ViewController.h"
-#import "NFAnalogClockTimeManager.h"
+#import "NFAnalogClockView.h"
+#import "NFAnalogClockView+Extension.h"
 
 @interface ViewController ()<UITextFieldDelegate, NFAnalogClockViewDelegate>
 
@@ -17,7 +18,6 @@
 
 
 @property (weak, nonatomic) IBOutlet NFAnalogClockView *clockView;
-@property (nonatomic, strong) NFAnalogClockTimeManager *manager;
 
 @end
 
@@ -28,13 +28,12 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     self.clockView.delegate = self;
-    self.manager = [[NFAnalogClockTimeManager alloc] initWithAnalogClockView:self.clockView];
     
     [self.hourInputField addTarget:self action:@selector(textFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
     [self.minuteInputField addTarget:self action:@selector(textFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
     [self.secondInputField addTarget:self action:@selector(textFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
 
-    [self.manager stopTime];
+    [self.clockView stopTime];
 }
 
 
@@ -45,7 +44,7 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     
-    [self.manager startTime];
+    [self.clockView startTime];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -55,7 +54,7 @@
 }
 
 - (void)textFieldTextDidChange:(UITextField *)tf {
-    [self.manager stopTime];
+    [self.clockView stopTime];
     
     if (tf == self.hourInputField) {
         CGFloat value = [tf.text floatValue];

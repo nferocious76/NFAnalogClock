@@ -15,7 +15,7 @@
 		F5034AB21DE9716500AB9D6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5034AB01DE9716500AB9D6C /* LaunchScreen.storyboard */; };
 		F5034ABB1DE9718300AB9D6C /* NFAnalogClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5034ABA1DE9718300AB9D6C /* NFAnalogClockView.m */; };
 		F5034ABE1DE971C000AB9D6C /* NFMathGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = F5034ABD1DE971C000AB9D6C /* NFMathGeometry.m */; };
-		F5034AC11DE9932000AB9D6C /* NFAnalogClockTimeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5034AC01DE9932000AB9D6C /* NFAnalogClockTimeManager.m */; };
+		F50B03C01DF0754E00FF5D40 /* NFAnalogClockView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = F50B03BF1DF0754E00FF5D40 /* NFAnalogClockView+Extension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,8 +33,8 @@
 		F5034ABA1DE9718300AB9D6C /* NFAnalogClockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFAnalogClockView.m; sourceTree = "<group>"; };
 		F5034ABC1DE971C000AB9D6C /* NFMathGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFMathGeometry.h; sourceTree = "<group>"; };
 		F5034ABD1DE971C000AB9D6C /* NFMathGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFMathGeometry.m; sourceTree = "<group>"; };
-		F5034ABF1DE9932000AB9D6C /* NFAnalogClockTimeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFAnalogClockTimeManager.h; sourceTree = "<group>"; };
-		F5034AC01DE9932000AB9D6C /* NFAnalogClockTimeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFAnalogClockTimeManager.m; sourceTree = "<group>"; };
+		F50B03BE1DF0754E00FF5D40 /* NFAnalogClockView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NFAnalogClockView+Extension.h"; sourceTree = "<group>"; };
+		F50B03BF1DF0754E00FF5D40 /* NFAnalogClockView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NFAnalogClockView+Extension.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,8 +94,8 @@
 			children = (
 				F5034AB91DE9718300AB9D6C /* NFAnalogClockView.h */,
 				F5034ABA1DE9718300AB9D6C /* NFAnalogClockView.m */,
-				F5034ABF1DE9932000AB9D6C /* NFAnalogClockTimeManager.h */,
-				F5034AC01DE9932000AB9D6C /* NFAnalogClockTimeManager.m */,
+				F50B03BE1DF0754E00FF5D40 /* NFAnalogClockView+Extension.h */,
+				F50B03BF1DF0754E00FF5D40 /* NFAnalogClockView+Extension.m */,
 				F5034ABC1DE971C000AB9D6C /* NFMathGeometry.h */,
 				F5034ABD1DE971C000AB9D6C /* NFMathGeometry.m */,
 			);
@@ -176,7 +176,7 @@
 				F5034AAA1DE9716500AB9D6C /* ViewController.m in Sources */,
 				F5034AA71DE9716500AB9D6C /* AppDelegate.m in Sources */,
 				F5034ABE1DE971C000AB9D6C /* NFMathGeometry.m in Sources */,
-				F5034AC11DE9932000AB9D6C /* NFAnalogClockTimeManager.m in Sources */,
+				F50B03C01DF0754E00FF5D40 /* NFAnalogClockView+Extension.m in Sources */,
 				F5034AA41DE9716500AB9D6C /* main.m in Sources */,
 				F5034ABB1DE9718300AB9D6C /* NFAnalogClockView.m in Sources */,
 			);
@@ -335,6 +335,7 @@
 				F5034AB81DE9716500AB9D6C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
