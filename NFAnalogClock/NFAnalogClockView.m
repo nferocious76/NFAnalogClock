@@ -30,6 +30,17 @@
 
 @implementation NFAnalogClockView
 
+- (instancetype)initWithFrame:(CGRect)frame delegate:(id<NFAnalogClockViewDelegate>)delegate {
+    
+    if (self = [super initWithFrame:frame]) {
+        self.delegate = delegate;
+        
+        [self loadDefaultData];
+    }
+    
+    return self;
+}
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     
@@ -39,10 +50,10 @@
 - (void)loadDefaultData {
     
     self.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5];
-
+    
     // default radius
     self.radius = (self.frame.size.height > self.frame.size.width ? self.frame.size.width / 2 : self.frame.size.height / 2) - 10;
-
+    
     // hour
     self.hourDialColor = [UIColor lightGrayColor];
     self.hourHandColor = [UIColor grayColor];
@@ -60,7 +71,7 @@
     self.minDialLength = 5;
     self.minHandLength = self.radius * 0.9;
     self.minHandWidth = 2;
-
+    
     // seconds
     self.secDialColor = [[UIColor blueColor] colorWithAlphaComponent:0.6];
     self.secHandColor = [UIColor blueColor];
@@ -69,7 +80,7 @@
     self.secDialLength = 2.5;
     self.secHandLength = self.radius * 0.9;
     self.secHandWidth = 1;
-
+    
     self.enableMinDial = YES;
     self.enableSecDial = YES;
     self.enableClockLabel = YES;
@@ -80,7 +91,7 @@
     
     self.dateTimeLabelFont = [UIFont systemFontOfSize:16];
     self.dateTimeLabelColor = [UIColor redColor];
-
+    
     self.currentHour = 0;
     self.currentMinute = 0;
     self.currentSecond = 0;
@@ -159,23 +170,23 @@
     }else{
         self.radius = (self.frame.size.height > self.frame.size.width ? self.frame.size.width / 2 : self.frame.size.height / 2) - 10;
     }
-
+    
     [self setNeedsDisplay];
 }
 
-- (void)setCurrentHour:(CGFloat)currentHour {
+- (void)setCurrentHour:(int)currentHour {
     _currentHour = currentHour;
     
     [self setNeedsDisplay];
 }
 
-- (void)setCurrentMinute:(CGFloat)currentMinute {
+- (void)setCurrentMinute:(int)currentMinute {
     _currentMinute = currentMinute;
     
     [self setNeedsDisplay];
 }
 
-- (void)setCurrentSecond:(CGFloat)currentSecond {
+- (void)setCurrentSecond:(int)currentSecond {
     _currentSecond = currentSecond;
     
     [self setNeedsDisplay];
@@ -229,7 +240,7 @@
     CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
     for (int i = 0; i < 360; i++) {
         if (i % 6 == 0) { continue; }
-
+        
         CGFloat angle = ToRadians(1 * i) - angleCorrection;
         CGPoint startPoint = PolarToDecart(center, self.radius - self.secDialLength, angle);
         CGPoint endPoint = PolarToDecart(center, self.radius, angle);
@@ -277,7 +288,7 @@
 }
 
 - (void)drawClockDateTimeLabel:(NSString *)dateTimeLabel {
-
+    
     NSDictionary *fontAttribute = @{NSFontAttributeName: self.dateTimeLabelFont, NSForegroundColorAttributeName: self.dateTimeLabelColor};
     CGSize hourLabelSize = [dateTimeLabel sizeWithAttributes:fontAttribute];
     
@@ -295,16 +306,16 @@
 /** Clock Hands */
 
 - (void)drawClockHourHandAtCenterPoint:(CGPoint)center hour:(CGFloat)hour {
-
+    
     CGFloat hourRatio = hour + (self.currentMinute / 60);
     CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
     CGFloat angle = ToRadians(30 * hourRatio) - angleCorrection;
     CGPoint startPoint = PolarToDecart(center, -(self.hourHandLength * 0.15), angle);
     CGPoint endPoint = PolarToDecart(center, self.hourHandLength, angle);
-
+    
     [self.hourHandColor setFill];
     [self.hourHandColor setStroke];
-
+    
     [self drawPinAtStartPoint:startPoint endPoint:endPoint width:self.hourHandWidth capStype:kCGLineCapRound];
 }
 
@@ -322,7 +333,7 @@
 }
 
 - (void)drawClockSecHandAtCenterPoint:(CGPoint)center second:(CGFloat)sec {
-
+    
     CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
     CGFloat angle = ToRadians(6 * sec) - angleCorrection;
     CGPoint startPoint = PolarToDecart(center, -(self.secHandLength * 0.3), angle);
@@ -371,15 +382,25 @@
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [touch locationInView:self];
     [self calculateAngleForMinuteHand:self.isMinHandActive atTouchPoint:touchLocation];
-
+    
     return YES;
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [touch locationInView:self];
     self.isMinHandActive = NO;
-
+    
     NSLog(@"Tracking ended at: %@", NSStringFromCGPoint(touchLocation));
+    
+    if ([self.delegate respondsToSelector:@selector(clockView:didUpdateTime:)]) {
+        NSString *hourString = self.currentHour > 9 ? @"%d" : @"0%d";
+        NSString *minuteString = self.currentMinute > 9 ? @"%d" : @"0%d";
+        NSString *secondString = self.currentSecond > 9 ? @"%d" : @"0%d";
+        NSString *timeStringFormat = [[hourString stringByAppendingString:minuteString] stringByAppendingString:secondString];
+        
+        NSString *timeString = [NSString stringWithFormat:timeStringFormat, self.currentHour, self.currentMinute, self.currentSecond];
+        [self.delegate clockView:self didUpdateTime:timeString];
+    }
 }
 
 - (void)cancelTrackingWithEvent:(UIEvent *)event {
@@ -391,7 +412,7 @@
     // canvas center
     CGPoint canvasCenterPoint = [self  canvasCenterWithDateTimeEnabled:self.enableDateTimeLabel];
     struct PolarCoordinate polar = DecartToPolar(canvasCenterPoint, touchPoint);
-
+    
     CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
     CGFloat fullCircleAngle = ToRadians(360);
     CGFloat correctedCircleAngle = fullCircleAngle - angleCorrection;
@@ -422,7 +443,7 @@
             NSLog(@"valid hour touch angle: %f -- hour angle: %f", polar.angle, angle);
         }
     }
-
+    
     if (!isValid) {
         NSLog(@"invalid touch angle: %f", polar.angle);
     }
@@ -439,10 +460,10 @@
     CGFloat fullCircleAngle = ToRadians(360);
     CGFloat angle = (polar.angle + angleCorrection);
     CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
-
+    
     CGFloat percentRatio = calculatedAngle / fullCircleAngle;
     CGFloat fullCircleDegrees = 360 * percentRatio;
-
+    
     if (isMinHand) {
         CGFloat minute = roundf(fullCircleDegrees / 6);
         self.currentMinute = minute;

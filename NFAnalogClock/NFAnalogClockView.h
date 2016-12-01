@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@class NFAnalogClockView;
+
+@protocol NFAnalogClockViewDelegate <NSObject>
+
+- (void)clockView:(NFAnalogClockView *)clockView didUpdateTime:(NSString *)timeString;
+
+@end
+
 @interface NFAnalogClockView : UIControl
 
 #pragma mark - Clock Design
@@ -51,16 +59,21 @@
 @property (nonatomic, strong) UIFont *dateTimeLabelFont;
 @property (nonatomic, strong) UIColor *dateTimeLabelColor;
 
-@property (nonatomic) CGFloat currentHour;
-@property (nonatomic) CGFloat currentMinute;
-@property (nonatomic) CGFloat currentSecond;
+@property (nonatomic) int currentHour;
+@property (nonatomic) int currentMinute;
+@property (nonatomic) int currentSecond;
 
 @property (nonatomic, strong) NSString *dateTimeLabel;
+
+@property (nonatomic, weak) id <NFAnalogClockViewDelegate>delegate;
+
+#pragma mark - Initializer
+
+- (instancetype)initWithFrame:(CGRect)frame delegate:(id <NFAnalogClockViewDelegate>)delegate;
 
 #pragma mark - Controls
 
 - (void)setCurrentClockTimeWithHour:(CGFloat)hour minute:(CGFloat)minute second:(CGFloat)second;
-
 - (void)refreshView;
 
 @end
