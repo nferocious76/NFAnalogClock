@@ -12,6 +12,9 @@
 
 @protocol NFAnalogClockViewDelegate <NSObject>
 
+/**
+ * Time format: 'HH:mm:ss'
+ */
 - (void)clockView:(NFAnalogClockView *)clockView didUpdateTime:(NSString *)timeString;
 
 @end
@@ -59,9 +62,9 @@
 @property (nonatomic, strong) UIFont *dateTimeLabelFont;
 @property (nonatomic, strong) UIColor *dateTimeLabelColor;
 
-@property (nonatomic) int currentHour;
-@property (nonatomic) int currentMinute;
-@property (nonatomic) int currentSecond;
+@property (nonatomic) CGFloat currentHour;
+@property (nonatomic) CGFloat currentMinute;
+@property (nonatomic) CGFloat currentSecond;
 
 @property (nonatomic, strong) NSString *dateTimeLabel;
 

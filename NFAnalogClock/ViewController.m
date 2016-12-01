@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "NFAnalogClockTimeManager.h"
 
-@interface ViewController ()<UITextFieldDelegate>
+@interface ViewController ()<UITextFieldDelegate, NFAnalogClockViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *hourInputField;
 @property (weak, nonatomic) IBOutlet UITextField *minuteInputField;
@@ -27,6 +27,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    self.clockView.delegate = self;
     self.manager = [[NFAnalogClockTimeManager alloc] initWithAnalogClockView:self.clockView];
     
     [self.hourInputField addTarget:self action:@selector(textFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
@@ -68,6 +69,13 @@
         CGFloat value = [tf.text floatValue];
         self.clockView.currentSecond = value;
     }
+}
+
+#pragma mark - NFAnalogClockViewDelegate
+
+- (void)clockView:(NFAnalogClockView *)clockView didUpdateTime:(NSString *)timeString {
+    
+    NSLog(@"%@", timeString);
 }
 
 @end

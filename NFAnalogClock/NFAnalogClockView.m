@@ -9,6 +9,12 @@
 #import "NFAnalogClockView.h"
 #import "NFMathGeometry.h"
 
+typedef enum : NSUInteger {
+    Hour,
+    Minute,
+    Second,
+} ClockHand;
+
 @interface NFAnalogClockView()
 
 // hour
@@ -24,7 +30,7 @@
 @property (nonatomic) CGFloat radius;
 @property (nonatomic) CGFloat dateTimeCanvasPercent;
 
-@property (nonatomic) BOOL isMinHandActive;
+@property (nonatomic) ClockHand activeClockHand;
 
 @end
 
@@ -174,19 +180,19 @@
     [self setNeedsDisplay];
 }
 
-- (void)setCurrentHour:(int)currentHour {
+- (void)setCurrentHour:(CGFloat)currentHour {
     _currentHour = currentHour;
     
     [self setNeedsDisplay];
 }
 
-- (void)setCurrentMinute:(int)currentMinute {
+- (void)setCurrentMinute:(CGFloat)currentMinute {
     _currentMinute = currentMinute;
     
     [self setNeedsDisplay];
 }
 
-- (void)setCurrentSecond:(int)currentSecond {
+- (void)setCurrentSecond:(CGFloat)currentSecond {
     _currentSecond = currentSecond;
     
     [self setNeedsDisplay];
@@ -364,14 +370,20 @@
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [touch locationInView:self];
     
-    if ([self isTouchPointValid:touchLocation forMinuteHand:YES]) {
-        self.isMinHandActive = YES;
+    if ([self isTouchPointValid:touchLocation forClockHand:Minute]) {
+        self.activeClockHand = Minute;
         
         return YES;
     }
     
-    if ([self isTouchPointValid:touchLocation forMinuteHand:NO]) {
-        self.isMinHandActive = NO;
+    if ([self isTouchPointValid:touchLocation forClockHand:Hour]) {
+        self.activeClockHand = Hour;
+        
+        return YES;
+    }
+    
+    if ([self isTouchPointValid:touchLocation forClockHand:Second]) {
+        self.activeClockHand = Second;
         
         return YES;
     }
@@ -381,21 +393,20 @@
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [touch locationInView:self];
-    [self calculateAngleForMinuteHand:self.isMinHandActive atTouchPoint:touchLocation];
+    [self calculateAngleForClockHand:self.activeClockHand atTouchPoint:touchLocation];
     
     return YES;
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [touch locationInView:self];
-    self.isMinHandActive = NO;
     
     NSLog(@"Tracking ended at: %@", NSStringFromCGPoint(touchLocation));
     
     if ([self.delegate respondsToSelector:@selector(clockView:didUpdateTime:)]) {
-        NSString *hourString = self.currentHour > 9 ? @"%d" : @"0%d";
-        NSString *minuteString = self.currentMinute > 9 ? @"%d" : @"0%d";
-        NSString *secondString = self.currentSecond > 9 ? @"%d" : @"0%d";
+        NSString *hourString = self.currentHour > 9 ? @"%.0f:" : @"0%.0f:";
+        NSString *minuteString = self.currentMinute > 9 ? @"%.0f:" : @"0%.0f:";
+        NSString *secondString = self.currentSecond > 9 ? @"%.0f" : @"0%.0f";
         NSString *timeStringFormat = [[hourString stringByAppendingString:minuteString] stringByAppendingString:secondString];
         
         NSString *timeString = [NSString stringWithFormat:timeStringFormat, self.currentHour, self.currentMinute, self.currentSecond];
@@ -408,7 +419,7 @@
     NSLog(@"Tracking canceled: %@", event);
 }
 
-- (BOOL)isTouchPointValid:(CGPoint)touchPoint forMinuteHand:(BOOL)isMinHand {
+- (BOOL)isTouchPointValid:(CGPoint)touchPoint forClockHand:(ClockHand)hand {
     // canvas center
     CGPoint canvasCenterPoint = [self  canvasCenterWithDateTimeEnabled:self.enableDateTimeLabel];
     struct PolarCoordinate polar = DecartToPolar(canvasCenterPoint, touchPoint);
@@ -416,42 +427,67 @@
     CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
     CGFloat fullCircleAngle = ToRadians(360);
     CGFloat correctedCircleAngle = fullCircleAngle - angleCorrection;
-    
-    BOOL isValid = NO;
-    
-    if (isMinHand) {
-        CGFloat angle = ToRadians(6 * self.currentMinute) + correctedCircleAngle;
-        CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
-        CGFloat angleDiff = (polar.angle - calculatedAngle);
-        
-        BOOL touchRadius = polar.radius <= self.minHandLength && polar.radius > 0;
-        isValid = angleDiff >= -0.03 && angleDiff <= 0.03 && touchRadius;
-        
-        if (isValid) {
-            NSLog(@"valid min touch angle: %f -- min angle: %f", polar.angle, angle);
-        }
-    }else{
-        CGFloat hourRatio = self.currentHour + (self.currentMinute / 60);
-        CGFloat angle = ToRadians(30 * hourRatio) + correctedCircleAngle;
-        CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
-        CGFloat angleDiff = (polar.angle - calculatedAngle);
-        
-        BOOL touchRadius = polar.radius <= self.hourHandLength && polar.radius > 0;
-        isValid = angleDiff >= -0.05 && angleDiff <= 0.05 && touchRadius;
-        
-        if (isValid) {
-            NSLog(@"valid hour touch angle: %f -- hour angle: %f", polar.angle, angle);
-        }
+
+    switch (hand) {
+        case Hour: {
+            
+            CGFloat hourRatio = self.currentHour + (self.currentMinute / 60);
+            CGFloat angle = ToRadians(30 * hourRatio) + correctedCircleAngle;
+            CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
+            CGFloat angleDiff = (polar.angle - calculatedAngle);
+            
+            BOOL touchRadius = polar.radius <= self.hourHandLength && polar.radius > 0;
+            BOOL isValid = angleDiff >= -0.04 && angleDiff <= 0.04 && touchRadius;
+            
+            if (isValid) {
+                NSLog(@"valid hour touch angle: %f -- hour angle: %f", polar.angle, angle);
+            }
+            
+            return isValid;
+        } break;
+
+        case Minute: {
+            
+            CGFloat angle = ToRadians(6 * self.currentMinute) + correctedCircleAngle;
+            CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
+            CGFloat angleDiff = (polar.angle - calculatedAngle);
+            
+            BOOL touchRadius = polar.radius <= self.minHandLength && polar.radius > 0;
+            BOOL isValid = angleDiff >= -0.03 && angleDiff <= 0.03 && touchRadius;
+            
+            if (isValid) {
+                NSLog(@"valid min touch angle: %f -- min angle: %f", polar.angle, angle);
+            }
+            
+            return isValid;
+        } break;
+
+        case Second: {
+            
+            CGFloat angle = ToRadians(6 * self.currentSecond) + correctedCircleAngle;
+            CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
+            CGFloat angleDiff = (polar.angle - calculatedAngle);
+            
+            BOOL touchRadius = polar.radius <= self.secHandLength && polar.radius > 0;
+            BOOL isValid = angleDiff >= -0.03 && angleDiff <= 0.03 && touchRadius;
+            
+            if (isValid) {
+                NSLog(@"valid min touch angle: %f -- min angle: %f", polar.angle, angle);
+            }
+            
+            return isValid;
+
+            return NO;
+        } break;
+
+        default:
+            NSLog(@"invalid touch angle: %f", polar.angle);
+            
+            return NO;
     }
-    
-    if (!isValid) {
-        NSLog(@"invalid touch angle: %f", polar.angle);
-    }
-    
-    return isValid;
 }
 
-- (void)calculateAngleForMinuteHand:(BOOL)isMinHand atTouchPoint:(CGPoint)touchPoint {
+- (void)calculateAngleForClockHand:(ClockHand)hand atTouchPoint:(CGPoint)touchPoint {
     // canvas center
     CGPoint canvasCenterPoint = [self  canvasCenterWithDateTimeEnabled:self.enableDateTimeLabel];
     struct PolarCoordinate polar = DecartToPolar(canvasCenterPoint, touchPoint);
@@ -463,20 +499,34 @@
     
     CGFloat percentRatio = calculatedAngle / fullCircleAngle;
     CGFloat fullCircleDegrees = 360 * percentRatio;
+    CGFloat timeRatio = fullCircleDegrees / 6;
     
-    if (isMinHand) {
-        CGFloat minute = roundf(fullCircleDegrees / 6);
-        self.currentMinute = minute;
-    }else{
-        CGFloat fullHours = (fullCircleDegrees / 6) / 5;
-        CGFloat hour = truncf(fullHours);
-        CGFloat minute = roundf((fullHours - hour) * 60);
-        
-        self.currentHour = hour;
-        self.currentMinute = minute;
+    switch (hand) {
+        case Hour: {
+            CGFloat fullHours = timeRatio / 5;
+            CGFloat hour = truncf(fullHours);
+            CGFloat minute = roundf((fullHours - hour) * 60);
+            
+            self.currentHour = hour;
+            self.currentMinute = minute;
+
+        } break;
+
+        case Minute: {
+            CGFloat minute = roundf(timeRatio);
+            self.currentMinute = minute;
+
+        } break;
+
+        case Second: {
+            CGFloat second = roundf(timeRatio);
+            self.currentSecond = second;
+
+        } break;
+
+        default:
+            break;
     }
-    
-    self.currentSecond = 0;
 }
 
 #pragma mark - Controls
