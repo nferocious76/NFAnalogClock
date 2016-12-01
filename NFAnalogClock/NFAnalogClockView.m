@@ -407,12 +407,14 @@ typedef enum : NSUInteger {
     NSLog(@"Tracking ended at: %@", NSStringFromCGPoint(touchLocation));
     
     if ([self.delegate respondsToSelector:@selector(clockView:didUpdateTime:)]) {
-        NSString *hourString = self.currentHour > 9 ? @"%.0f:" : @"0%.0f:";
+        
+        CGFloat hour = self.currentHour == 0 ? 12 : self.currentHour;
+        NSString *hourString = hour > 9 ? @"%.0f:" : @"0%.0f:";
         NSString *minuteString = self.currentMinute > 9 ? @"%.0f:" : @"0%.0f:";
         NSString *secondString = self.currentSecond > 9 ? @"%.0f" : @"0%.0f";
         NSString *timeStringFormat = [[hourString stringByAppendingString:minuteString] stringByAppendingString:secondString];
         
-        NSString *timeString = [NSString stringWithFormat:timeStringFormat, self.currentHour, self.currentMinute, self.currentSecond];
+        NSString *timeString = [NSString stringWithFormat:timeStringFormat, hour, self.currentMinute, self.currentSecond];
         [self.delegate clockView:self didUpdateTime:timeString];
     }
 }
