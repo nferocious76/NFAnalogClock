@@ -50,6 +50,8 @@
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSTimer *timeScheduler;
 
+@property (nonatomic, strong) NSDate *clockDate;
+
 #pragma mark - Clock Face
 
 // clock's radius
@@ -80,6 +82,6 @@
 #pragma mark - Controls
 
 - (void)setCurrentClockTimeWithHour:(CGFloat)hour minute:(CGFloat)minute second:(CGFloat)second;
-- (void)refreshView;
+- (void)refreshClockView;
 
 @end

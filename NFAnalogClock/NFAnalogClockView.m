@@ -8,6 +8,7 @@
 
 #import "NFAnalogClockView.h"
 #import "NFMathGeometry.h"
+#import "NFAnalogClockView+Extension.h"
 
 typedef enum : NSUInteger {
     Hour,
@@ -103,9 +104,11 @@ typedef enum : NSUInteger {
     self.dateTimeLabelColor = [UIColor redColor];
     
     self.dateFormatter = [[NSDateFormatter alloc] init];
-    self.dateFormatter.dateFormat = @"dd MMMM yyyy HH:mm:ss";
+    self.dateFormatter.dateFormat = @"dd MMMM yyyy HH:mm:ss a";
     
-    self.dateTimeLabel = [[NSDate date] description];
+    self.clockDate = [NSDate date];
+    NSString *currentDateTime = [self.dateFormatter stringFromDate:self.clockDate];
+    [self setDateTimeLabel:currentDateTime];
 
 }
 
@@ -375,18 +378,21 @@ typedef enum : NSUInteger {
     if ([self isTouchPointValid:touchLocation forClockHand:Minute]) {
         self.activeClockHand = Minute;
         
+        [self stopTime];
         return YES;
     }
     
     if ([self isTouchPointValid:touchLocation forClockHand:Hour]) {
         self.activeClockHand = Hour;
         
+        [self stopTime];
         return YES;
     }
     
     if ([self isTouchPointValid:touchLocation forClockHand:Second]) {
         self.activeClockHand = Second;
         
+        [self stopTime];
         return YES;
     }
     
@@ -401,24 +407,32 @@ typedef enum : NSUInteger {
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+//    [self startTime];
+    
     CGPoint touchLocation = [touch locationInView:self];
-    
     NSLog(@"Tracking ended at: %@", NSStringFromCGPoint(touchLocation));
-    
     if ([self.delegate respondsToSelector:@selector(clockView:didUpdateTime:)]) {
         
         CGFloat hour = self.currentHour == 0 ? 12 : self.currentHour;
         NSString *hourString = hour > 9 ? @"%.0f:" : @"0%.0f:";
         NSString *minuteString = self.currentMinute > 9 ? @"%.0f:" : @"0%.0f:";
         NSString *secondString = self.currentSecond > 9 ? @"%.0f" : @"0%.0f";
-        NSString *timeStringFormat = [[hourString stringByAppendingString:minuteString] stringByAppendingString:secondString];
+        NSString *clockPeriod = [NSString stringWithFormat:@" %@", [self currentClockPeriod]];
+        NSString *timeStringFormat = [[[hourString stringByAppendingString:minuteString] stringByAppendingString:secondString] stringByAppendingString:clockPeriod];
         
         NSString *timeString = [NSString stringWithFormat:timeStringFormat, hour, self.currentMinute, self.currentSecond];
         [self.delegate clockView:self didUpdateTime:timeString];
+        
+        if (self.enableDateTimeLabel) {
+            NSDate *clockDate = [self currentDateWithHour:self.currentHour minute:self.currentMinute second:self.currentSecond];
+            NSString *clockDateTime = [self.dateFormatter stringFromDate:clockDate];
+            [self setDateTimeLabel:clockDateTime];
+        }
     }
 }
 
 - (void)cancelTrackingWithEvent:(UIEvent *)event {
+//    [self startTime];
     
     NSLog(@"Tracking canceled: %@", event);
 }
@@ -543,7 +557,7 @@ typedef enum : NSUInteger {
     [self setNeedsDisplay];
 }
 
-- (void)refreshView {
+- (void)refreshClockView {
     
     [self setNeedsDisplay];
 }
