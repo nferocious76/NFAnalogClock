@@ -30,6 +30,7 @@ typedef enum : NSUInteger {
 @property (nonatomic) CGFloat radius;
 @property (nonatomic) CGFloat dateTimeCanvasPercent;
 
+// clock's active hand
 @property (nonatomic) ClockHand activeClockHand;
 
 @end
@@ -57,9 +58,17 @@ typedef enum : NSUInteger {
     
     self.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5];
     
-    // default radius
-    self.radius = (self.frame.size.height > self.frame.size.width ? self.frame.size.width / 2 : self.frame.size.height / 2) - 10;
+    self.currentHour = 0;
+    self.currentMinute = 0;
+    self.currentSecond = 0;
     
+    self.dateTimeCanvasPercent = 0.20;
+    
+    self.enableMinDial = YES;
+    self.enableSecDial = YES;
+    self.enableClockLabel = YES;
+    self.enableDateTimeLabel = YES;
+
     // hour
     self.hourDialColor = [UIColor lightGrayColor];
     self.hourHandColor = [UIColor grayColor];
@@ -84,13 +93,8 @@ typedef enum : NSUInteger {
     
     self.secDialWidth = 1;
     self.secDialLength = 2.5;
-    self.secHandLength = self.radius * 0.9;
+    self.secHandLength = self.radius * 0.95;
     self.secHandWidth = 1;
-    
-    self.enableMinDial = YES;
-    self.enableSecDial = YES;
-    self.enableClockLabel = YES;
-    self.enableDateTimeLabel = YES;
     
     self.hourLabelFont = [UIFont systemFontOfSize:12];
     self.hourLabelColor = [UIColor blackColor];
@@ -98,16 +102,11 @@ typedef enum : NSUInteger {
     self.dateTimeLabelFont = [UIFont systemFontOfSize:16];
     self.dateTimeLabelColor = [UIColor redColor];
     
-    self.currentHour = 0;
-    self.currentMinute = 0;
-    self.currentSecond = 0;
-    
-    self.dateTimeCanvasPercent = 0.20;
-    
     self.dateFormatter = [[NSDateFormatter alloc] init];
     self.dateFormatter.dateFormat = @"dd MMMM yyyy HH:mm:ss";
     
     self.dateTimeLabel = [[NSDate date] description];
+
 }
 
 #pragma mark - Drawing

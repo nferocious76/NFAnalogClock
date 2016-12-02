@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,8 +23,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YxB-qV-lc0" customClass="NFAnalogClockView">
-                                <rect key="frame" x="20" y="70" width="335" height="527"/>
+                                <rect key="frame" x="20" y="70" width="335" height="335"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="YxB-qV-lc0" secondAttribute="height" multiplier="1:1" id="dzJ-qL-Rsz"/>
+                                </constraints>
                             </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Hour" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Uww-eM-sKC">
                                 <rect key="frame" x="20" y="617" width="106.5" height="30"/>
@@ -58,7 +62,6 @@
                             <constraint firstItem="D0o-PV-z3E" firstAttribute="top" secondItem="iW1-0d-Ei7" secondAttribute="top" id="3Tc-bR-fUR"/>
                             <constraint firstItem="D0o-PV-z3E" firstAttribute="leading" secondItem="Uww-eM-sKC" secondAttribute="trailing" constant="8" id="5EV-g0-7WX"/>
                             <constraint firstAttribute="trailing" secondItem="iW1-0d-Ei7" secondAttribute="trailing" constant="20" id="BsM-mG-yQX"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="YxB-qV-lc0" secondAttribute="bottom" constant="70" id="CPi-MF-bS6"/>
                             <constraint firstItem="D0o-PV-z3E" firstAttribute="width" secondItem="iW1-0d-Ei7" secondAttribute="width" id="SmC-e4-y04"/>
                             <constraint firstItem="Uww-eM-sKC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="TfD-TS-rDO"/>
                             <constraint firstItem="D0o-PV-z3E" firstAttribute="bottom" secondItem="iW1-0d-Ei7" secondAttribute="bottom" id="Uu8-Vv-Dwe"/>
