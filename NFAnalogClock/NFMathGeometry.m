@@ -8,6 +8,10 @@
 
 #import "NFMathGeometry.h"
 
+NSString *NFAnalogClockDefaultDateFormat() {
+    return @"dd MMMM yyyy HH:mm:ss a";
+}
+
 struct PolarCoordinate PolarCoordinateMake(CGFloat radius, CGFloat angle)
 {
     struct PolarCoordinate pCoordinate;

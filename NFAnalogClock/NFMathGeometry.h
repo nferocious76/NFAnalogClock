@@ -10,6 +10,8 @@
 #import <UIKit/UIKit.h>
 
 
+NSString *NFAnalogClockDefaultDateFormat();
+
 struct PolarCoordinate {
     CGFloat radius;
     CGFloat angle;

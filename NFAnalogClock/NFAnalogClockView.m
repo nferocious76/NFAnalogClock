@@ -38,10 +38,11 @@ typedef enum : NSUInteger {
 
 @implementation NFAnalogClockView
 
-- (instancetype)initWithFrame:(CGRect)frame delegate:(id<NFAnalogClockViewDelegate>)delegate {
+- (instancetype)initWithFrame:(CGRect)frame delegate:(id<NFAnalogClockViewDelegate>)delegate dataSource:(id<NFAnalogClockViewDataSource>)dataSource {
     
     if (self = [super initWithFrame:frame]) {
         self.delegate = delegate;
+        self.dataSource = dataSource;
         
         [self loadDefaultData];
     }
@@ -104,7 +105,12 @@ typedef enum : NSUInteger {
     self.dateTimeLabelColor = [UIColor redColor];
     
     self.dateFormatter = [[NSDateFormatter alloc] init];
-    self.dateFormatter.dateFormat = @"dd MMMM yyyy HH:mm:ss a";
+    
+    if ([self.dataSource respondsToSelector:@selector(dateFormatForClockView:)]) {
+        self.dateFormatter.dateFormat = [self.dataSource dateFormatForClockView:self];
+    }else{
+        self.dateFormatter.dateFormat = NFAnalogClockDefaultDateFormat();
+    }
     
     self.clockDate = [NSDate date];
     NSString *currentDateTime = [self.dateFormatter stringFromDate:self.clockDate];
@@ -425,6 +431,13 @@ typedef enum : NSUInteger {
         
         if (self.enableDateTimeLabel) {
             NSDate *clockDate = [self currentDateWithHour:self.currentHour minute:self.currentMinute second:self.currentSecond];
+            
+            if ([self.dataSource respondsToSelector:@selector(dateFormatForClockView:)]) {
+                self.dateFormatter.dateFormat = [self.dataSource dateFormatForClockView:self];
+            }else{
+                self.dateFormatter.dateFormat = NFAnalogClockDefaultDateFormat();
+            }
+
             NSString *clockDateTime = [self.dateFormatter stringFromDate:clockDate];
             [self setDateTimeLabel:clockDateTime];
         }

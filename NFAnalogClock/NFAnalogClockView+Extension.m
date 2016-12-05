@@ -7,6 +7,7 @@
 //
 
 #import "NFAnalogClockView+Extension.h"
+#import "NFMathGeometry.h"
 
 @implementation NFAnalogClockView (Extension)
 
@@ -38,6 +39,13 @@
     [self setCurrentClockTimeWithHour:[components hour] minute:[components minute] second:[components second]];
     
     if (self.enableDateTimeLabel) {
+        
+        if ([self.dataSource respondsToSelector:@selector(dateFormatForClockView:)]) {
+            self.dateFormatter.dateFormat = [self.dataSource dateFormatForClockView:self];
+        }else{
+            self.dateFormatter.dateFormat = NFAnalogClockDefaultDateFormat();
+        }
+        
         NSString *currentDateTime = [self.dateFormatter stringFromDate:dateNow];
         [self setDateTimeLabel:currentDateTime];
     }
@@ -46,10 +54,8 @@
 - (NSString *)currentClockPeriod {
     
     NSDate *dateNow = [NSDate date];
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:NSCalendarUnitHour fromDate:dateNow];
-    
-    NSString *clockPeriod = [components hour] > 11 ? @"PM" : @"AM";
+    self.dateFormatter.dateFormat = @"a";
+    NSString *clockPeriod = [self.dateFormatter stringFromDate:dateNow];
     
     return clockPeriod;
 }

@@ -10,6 +10,13 @@
 
 @class NFAnalogClockView;
 
+@protocol NFAnalogClockViewDataSource <NSObject>
+
+@required
+- (NSString *)dateFormatForClockView:(NFAnalogClockView *)clockView;
+
+@end
+
 @protocol NFAnalogClockViewDelegate <NSObject>
 
 /**
@@ -74,10 +81,14 @@
 @property (nonatomic, strong) NSString *dateTimeLabel;
 
 @property (nonatomic, weak) id <NFAnalogClockViewDelegate>delegate;
+@property (nonatomic, weak) id <NFAnalogClockViewDataSource>dataSource;
+
 
 #pragma mark - Initializer
 
-- (instancetype)initWithFrame:(CGRect)frame delegate:(id <NFAnalogClockViewDelegate>)delegate;
+- (instancetype)initWithFrame:(CGRect)frame
+                     delegate:(id <NFAnalogClockViewDelegate>)delegate
+                   dataSource:(id <NFAnalogClockViewDataSource>)dataSource;
 
 #pragma mark - Controls
 
