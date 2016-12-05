@@ -74,6 +74,8 @@
 @property (nonatomic, strong) UIFont *dateTimeLabelFont;
 @property (nonatomic, strong) UIColor *dateTimeLabelColor;
 
+@property (nonatomic, strong) UIColor *clockFaceColor;
+
 @property (nonatomic) CGFloat currentHour;
 @property (nonatomic) CGFloat currentMinute;
 @property (nonatomic) CGFloat currentSecond;

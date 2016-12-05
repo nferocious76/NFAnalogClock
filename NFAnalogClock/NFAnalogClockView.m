@@ -104,6 +104,8 @@ typedef enum : NSUInteger {
     self.dateTimeLabelFont = [UIFont systemFontOfSize:16];
     self.dateTimeLabelColor = [UIColor redColor];
     
+    self.clockFaceColor = [UIColor yellowColor];
+    
     self.dateFormatter = [[NSDateFormatter alloc] init];
     
     if ([self.dataSource respondsToSelector:@selector(dateFormatForClockView:)]) {
@@ -126,13 +128,24 @@ typedef enum : NSUInteger {
     // Drawing code
     
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    CGContextSetAlpha(context, self.alpha);
-    CGContextSetFillColorWithColor(context, self.backgroundColor.CGColor);
+    CGContextSaveGState(context);
+    CGContextSetAllowsFontSmoothing(context, YES);
     
     // canvas center
     CGPoint canvasCenterPoint = [self canvasCenterWithDateTimeEnabled:self.enableDateTimeLabel];
+
+    [self.clockFaceColor setFill];
+    [self.clockFaceColor setStroke];
     
+    CGFloat maxAngle = ToRadians(360);
+    CGContextAddArc(context, canvasCenterPoint.x, canvasCenterPoint.y, self.radius + 0.5, 0, maxAngle, 0);
+    CGContextSetLineCap(context, kCGLineCapRound);
+    CGContextFillPath(context);
+    CGContextStrokePath(context);
+    
+    CGContextSetAlpha(context, self.alpha);
+    CGContextSetFillColorWithColor(context, self.backgroundColor.CGColor);
+
     // draw hour dial pins
     [self drawHourDialAtCenterPoint:canvasCenterPoint];
     
@@ -156,6 +169,8 @@ typedef enum : NSUInteger {
     if (self.enableDateTimeLabel) {
         [self drawClockDateTimeLabel:self.dateTimeLabel];
     }
+    
+    CGContextRestoreGState(context);
 }
 
 #pragma mark - Setters
