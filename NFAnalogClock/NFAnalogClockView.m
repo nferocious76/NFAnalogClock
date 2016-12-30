@@ -428,7 +428,6 @@ typedef enum : NSUInteger {
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-//    [self startTime];
     
     CGPoint touchLocation = [touch locationInView:self];
     NSLog(@"Tracking ended at: %@", NSStringFromCGPoint(touchLocation));
@@ -438,7 +437,7 @@ typedef enum : NSUInteger {
         [self.delegate clockView:self didUpdateTime:time];
         
         if (self.enableDateTimeLabel) {
-            NSDate *clockDate = [self currentDateWithHour:self.currentHour minute:self.currentMinute second:self.currentSecond];
+            NSDate *clockDate = [time currentDate];;
             
             if ([self.dataSource respondsToSelector:@selector(dateFormatForClockView:)]) {
                 self.dateFormatter.dateFormat = [self.dataSource dateFormatForClockView:self];
@@ -453,7 +452,6 @@ typedef enum : NSUInteger {
 }
 
 - (void)cancelTrackingWithEvent:(UIEvent *)event {
-//    [self startTime];
     
     NSLog(@"Tracking canceled: %@", event);
 }
@@ -576,11 +574,13 @@ typedef enum : NSUInteger {
     self.currentSecond = second;
     
     [self setNeedsDisplay];
+    [self forceUpdateClockLabel];
 }
 
 - (void)refreshClockView {
     
     [self setNeedsDisplay];
+    [self forceUpdateClockLabel];
 }
 
 @end

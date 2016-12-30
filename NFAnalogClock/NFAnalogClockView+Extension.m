@@ -51,28 +51,22 @@
     }
 }
 
-- (NSString *)currentClockPeriod {
+- (void)forceUpdateClockLabel {
     
-    NSDate *dateNow = [NSDate date];
-    self.dateFormatter.dateFormat = @"a";
-    NSString *clockPeriod = [self.dateFormatter stringFromDate:dateNow];
-    
-    return clockPeriod;
-}
+    if (self.enableDateTimeLabel) {
+        NFTime *time = [[NFTime alloc] initWithHour:self.currentHour minute:self.currentMinute second:self.currentSecond formatter:self.dateFormatter];
 
-- (NSDate *)currentDateWithHour:(CGFloat)hour minute:(CGFloat)minute second:(CGFloat)second {
-    
-    NSDate *dateNow = [NSDate date];
-    
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:(NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear | NSCalendarUnitTimeZone | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond) fromDate:dateNow];
-    [components setHour:self.currentHour];
-    [components setMinute:self.currentMinute];
-    [components setSecond:self.currentSecond];
-
-    NSDate *clockDate = [calendar dateFromComponents:components];
-    
-    return clockDate;
+        NSDate *clockDate = [time currentDate];;
+        
+        if ([self.dataSource respondsToSelector:@selector(dateFormatForClockView:)]) {
+            self.dateFormatter.dateFormat = [self.dataSource dateFormatForClockView:self];
+        }else{
+            self.dateFormatter.dateFormat = NFAnalogClockDefaultDateFormat();
+        }
+        
+        NSString *clockDateTime = [self.dateFormatter stringFromDate:clockDate];
+        [self setDateTimeLabel:clockDateTime];
+    }
 }
 
 @end

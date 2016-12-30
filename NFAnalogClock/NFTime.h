@@ -19,7 +19,9 @@
 
 @property (nonatomic, strong, readonly) NSString *period;
 
-- (NSString *)timeToString;
 - (NSString *)currentClockPeriod;
+- (NSString *)timeToString;
+
+- (NSDate *)currentDate;
 
 @end

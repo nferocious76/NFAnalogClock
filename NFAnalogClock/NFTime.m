@@ -61,4 +61,18 @@
     return clockPeriod;
 }
 
+- (NSDate *)currentDate {
+    NSDate *dateNow = [NSDate date];
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components:(NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear | NSCalendarUnitTimeZone | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond) fromDate:dateNow];
+    [components setHour:self.hour];
+    [components setMinute:self.minute];
+    [components setSecond:self.second];
+    
+    NSDate *clockDate = [calendar dateFromComponents:components];
+    
+    return clockDate;
+}
+
 @end

@@ -13,7 +13,6 @@
 - (void)startTime;
 - (void)stopTime;
 
-- (NSString *)currentClockPeriod;
-- (NSDate *)currentDateWithHour:(CGFloat)hour minute:(CGFloat)minute second:(CGFloat)second;
+- (void)forceUpdateClockLabel;
 
 @end
