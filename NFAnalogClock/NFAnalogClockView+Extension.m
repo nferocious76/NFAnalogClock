@@ -18,7 +18,7 @@
         self.timeScheduler = nil;
     }
     
-    [self updateClock];
+    [self updateRealTimeClock];
     self.timeScheduler = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateClock) userInfo:nil repeats:YES];
 }
 
@@ -30,7 +30,7 @@
     }
 }
 
-- (void)updateClock {
+- (void)updateRealTimeClock {
     
     NSDate *dateNow = [NSDate date];
     NSCalendar *calendar = [NSCalendar currentCalendar];
@@ -51,11 +51,10 @@
     }
 }
 
-- (void)forceUpdateClockLabel {
-    
-    if (self.enableDateTimeLabel) {
-        NFTime *time = [[NFTime alloc] initWithHour:self.currentHour minute:self.currentMinute second:self.currentSecond formatter:self.dateFormatter];
+- (NFTime *)updateClock {
+    NFTime *time = [[NFTime alloc] initWithHour:self.currentHour minute:self.currentMinute second:self.currentSecond formatter:self.dateFormatter];
 
+    if (self.enableDateTimeLabel) {
         NSDate *clockDate = [time currentDate];;
         
         if ([self.dataSource respondsToSelector:@selector(dateFormatForClockView:)]) {
@@ -67,6 +66,8 @@
         NSString *clockDateTime = [self.dateFormatter stringFromDate:clockDate];
         [self setDateTimeLabel:clockDateTime];
     }
+
+    return time;
 }
 
 @end

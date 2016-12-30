@@ -424,6 +424,11 @@ typedef enum : NSUInteger {
     CGPoint touchLocation = [touch preciseLocationInView:self];
     [self calculateAngleForClockHand:self.activeClockHand atTouchPoint:touchLocation];
     
+    NFTime *time = [self updateClock];
+    if ([self.delegate respondsToSelector:@selector(clockView:didUpdateTime:)]) {
+        [self.delegate clockView:self didUpdateTime:time];
+    }
+    
     return YES;
 }
 
@@ -431,23 +436,10 @@ typedef enum : NSUInteger {
     
     CGPoint touchLocation = [touch preciseLocationInView:self];
     NSLog(@"Tracking ended at: %@", NSStringFromCGPoint(touchLocation));
+    
+    NFTime *time = [self updateClock];
     if ([self.delegate respondsToSelector:@selector(clockView:didUpdateTime:)]) {
-        NFTime *time = [[NFTime alloc] initWithHour:self.currentHour minute:self.currentMinute second:self.currentSecond formatter:self.dateFormatter];
-        
         [self.delegate clockView:self didUpdateTime:time];
-        
-        if (self.enableDateTimeLabel) {
-            NSDate *clockDate = [time currentDate];;
-            
-            if ([self.dataSource respondsToSelector:@selector(dateFormatForClockView:)]) {
-                self.dateFormatter.dateFormat = [self.dataSource dateFormatForClockView:self];
-            }else{
-                self.dateFormatter.dateFormat = NFAnalogClockDefaultDateFormat();
-            }
-
-            NSString *clockDateTime = [self.dateFormatter stringFromDate:clockDate];
-            [self setDateTimeLabel:clockDateTime];
-        }
     }
 }
 
@@ -577,13 +569,13 @@ typedef enum : NSUInteger {
     self.currentSecond = second;
     
     [self setNeedsDisplay];
-    [self forceUpdateClockLabel];
+    [self updateClock];
 }
 
 - (void)refreshClockView {
     
     [self setNeedsDisplay];
-    [self forceUpdateClockLabel];
+    [self updateClock];
 }
 
 @end

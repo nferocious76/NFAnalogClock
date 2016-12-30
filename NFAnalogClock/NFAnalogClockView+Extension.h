@@ -13,6 +13,6 @@
 - (void)startTime;
 - (void)stopTime;
 
-- (void)forceUpdateClockLabel;
+- (NFTime *)updateClock;
 
 @end
