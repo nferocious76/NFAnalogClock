@@ -71,9 +71,9 @@
 
 #pragma mark - NFAnalogClockViewDelegate
 
-- (void)clockView:(NFAnalogClockView *)clockView didUpdateTime:(NSString *)timeString {
+- (void)clockView:(NFAnalogClockView *)clockView didUpdateTime:(NFTime *)time {
     
-    NSLog(@"%@", timeString);
+    NSLog(@"%@", [time timeToString]);
 }
 
 @end

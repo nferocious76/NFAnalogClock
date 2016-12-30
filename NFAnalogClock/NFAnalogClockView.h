@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NFTime.h"
 
 @class NFAnalogClockView;
 
@@ -22,7 +23,7 @@
 /**
  * Time format: 'HH:mm:ss'
  */
-- (void)clockView:(NFAnalogClockView *)clockView didUpdateTime:(NSString *)timeString;
+- (void)clockView:(NFAnalogClockView *)clockView didUpdateTime:(NFTime *)time;
 
 @end
 

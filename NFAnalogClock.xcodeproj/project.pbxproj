@@ -16,6 +16,7 @@
 		F5034ABB1DE9718300AB9D6C /* NFAnalogClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5034ABA1DE9718300AB9D6C /* NFAnalogClockView.m */; };
 		F5034ABE1DE971C000AB9D6C /* NFMathGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = F5034ABD1DE971C000AB9D6C /* NFMathGeometry.m */; };
 		F50B03C01DF0754E00FF5D40 /* NFAnalogClockView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = F50B03BF1DF0754E00FF5D40 /* NFAnalogClockView+Extension.m */; };
+		F5F0DD2C1E165ABF00A91AFB /* NFTime.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F0DD2B1E165ABF00A91AFB /* NFTime.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,8 @@
 		F5034ABD1DE971C000AB9D6C /* NFMathGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFMathGeometry.m; sourceTree = "<group>"; };
 		F50B03BE1DF0754E00FF5D40 /* NFAnalogClockView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NFAnalogClockView+Extension.h"; sourceTree = "<group>"; };
 		F50B03BF1DF0754E00FF5D40 /* NFAnalogClockView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NFAnalogClockView+Extension.m"; sourceTree = "<group>"; };
+		F5F0DD2A1E165ABF00A91AFB /* NFTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFTime.h; sourceTree = "<group>"; };
+		F5F0DD2B1E165ABF00A91AFB /* NFTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFTime.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +95,8 @@
 		F5034AC21DE993A500AB9D6C /* NFClock */ = {
 			isa = PBXGroup;
 			children = (
+				F5F0DD2A1E165ABF00A91AFB /* NFTime.h */,
+				F5F0DD2B1E165ABF00A91AFB /* NFTime.m */,
 				F5034AB91DE9718300AB9D6C /* NFAnalogClockView.h */,
 				F5034ABA1DE9718300AB9D6C /* NFAnalogClockView.m */,
 				F50B03BE1DF0754E00FF5D40 /* NFAnalogClockView+Extension.h */,
@@ -179,6 +184,7 @@
 				F50B03C01DF0754E00FF5D40 /* NFAnalogClockView+Extension.m in Sources */,
 				F5034AA41DE9716500AB9D6C /* main.m in Sources */,
 				F5034ABB1DE9718300AB9D6C /* NFAnalogClockView.m in Sources */,
+				F5F0DD2C1E165ABF00A91AFB /* NFTime.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
