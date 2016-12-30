@@ -394,7 +394,7 @@ typedef enum : NSUInteger {
 #pragma mark - Touches
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    CGPoint touchLocation = [touch locationInView:self];
+    CGPoint touchLocation = [touch preciseLocationInView:self];
     
     if ([self isTouchPointValid:touchLocation forClockHand:Minute]) {
         self.activeClockHand = Minute;
@@ -421,7 +421,7 @@ typedef enum : NSUInteger {
 }
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    CGPoint touchLocation = [touch locationInView:self];
+    CGPoint touchLocation = [touch preciseLocationInView:self];
     [self calculateAngleForClockHand:self.activeClockHand atTouchPoint:touchLocation];
     
     return YES;
@@ -429,7 +429,7 @@ typedef enum : NSUInteger {
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     
-    CGPoint touchLocation = [touch locationInView:self];
+    CGPoint touchLocation = [touch preciseLocationInView:self];
     NSLog(@"Tracking ended at: %@", NSStringFromCGPoint(touchLocation));
     if ([self.delegate respondsToSelector:@selector(clockView:didUpdateTime:)]) {
         NFTime *time = [[NFTime alloc] initWithHour:self.currentHour minute:self.currentMinute second:self.currentSecond formatter:self.dateFormatter];
@@ -513,8 +513,6 @@ typedef enum : NSUInteger {
             }
             
             return isValid;
-
-            return NO;
         } break;
 
         default:
