@@ -70,7 +70,7 @@ typedef enum : NSUInteger {
     _enableMinDial = YES;
     _enableSecDial = YES;
     _enableClockLabel = YES;
-    _enableDateTimeLabel = YES;
+    self.enableDateTimeLabel = YES;
 
     // hour
     _hourDialColor = [UIColor lightGrayColor];
