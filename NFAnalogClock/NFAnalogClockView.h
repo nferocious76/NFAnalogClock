@@ -64,6 +64,7 @@
 
 // clock's radius
 
+@property (nonatomic) BOOL enableHourDial;
 @property (nonatomic) BOOL enableMinDial;
 @property (nonatomic) BOOL enableSecDial;
 @property (nonatomic) BOOL enableClockLabel;

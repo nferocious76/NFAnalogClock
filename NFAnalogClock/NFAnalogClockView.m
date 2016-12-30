@@ -60,53 +60,54 @@ typedef enum : NSUInteger {
     
     self.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5];
     
-    self.currentHour = 0;
-    self.currentMinute = 0;
-    self.currentSecond = 0;
+    _currentHour = 0;
+    _currentMinute = 0;
+    _currentSecond = 0;
     
-    self.dateTimeCanvasPercent = 0.20;
+    _dateTimeCanvasPercent = 0.20;
     
-    self.enableMinDial = YES;
-    self.enableSecDial = YES;
-    self.enableClockLabel = YES;
-    self.enableDateTimeLabel = YES;
+    _enableHourDial = YES;
+    _enableMinDial = YES;
+    _enableSecDial = YES;
+    _enableClockLabel = YES;
+    _enableDateTimeLabel = YES;
 
     // hour
-    self.hourDialColor = [UIColor lightGrayColor];
-    self.hourHandColor = [UIColor grayColor];
+    _hourDialColor = [UIColor lightGrayColor];
+    _hourHandColor = [UIColor grayColor];
     
-    self.hourDialWidth = 2;
-    self.hourDialLength = 10;
-    self.hourHandLength = self.radius * 0.7;
-    self.hourHandWidth = 3;
+    _hourDialWidth = 2;
+    _hourDialLength = 10;
+    _hourHandLength = self.radius * 0.7;
+    _hourHandWidth = 3;
     
     // minutes
-    self.minDialColor = [[UIColor greenColor] colorWithAlphaComponent:0.8];
-    self.minHandColor = [UIColor greenColor];
+    _minDialColor = [[UIColor greenColor] colorWithAlphaComponent:0.8];
+    _minHandColor = [UIColor greenColor];
     
-    self.minDialWidth = 1.5;
-    self.minDialLength = 5;
-    self.minHandLength = self.radius * 0.9;
-    self.minHandWidth = 2;
+    _minDialWidth = 1.5;
+    _minDialLength = 5;
+    _minHandLength = self.radius * 0.9;
+    _minHandWidth = 2;
     
     // seconds
-    self.secDialColor = [[UIColor blueColor] colorWithAlphaComponent:0.6];
-    self.secHandColor = [UIColor blueColor];
+    _secDialColor = [[UIColor blueColor] colorWithAlphaComponent:0.6];
+    _secHandColor = [UIColor blueColor];
     
-    self.secDialWidth = 1;
-    self.secDialLength = 2.5;
-    self.secHandLength = self.radius * 0.95;
-    self.secHandWidth = 1;
+    _secDialWidth = 1;
+    _secDialLength = 2.5;
+    _secHandLength = self.radius * 0.95;
+    _secHandWidth = 1;
     
-    self.hourLabelFont = [UIFont systemFontOfSize:12];
-    self.hourLabelColor = [UIColor blackColor];
+    _hourLabelFont = [UIFont systemFontOfSize:12];
+    _hourLabelColor = [UIColor blackColor];
     
-    self.dateTimeLabelFont = [UIFont systemFontOfSize:16];
-    self.dateTimeLabelColor = [UIColor redColor];
+    _dateTimeLabelFont = [UIFont systemFontOfSize:16];
+    _dateTimeLabelColor = [UIColor redColor];
     
-    self.clockFaceColor = [UIColor yellowColor];
+    _clockFaceColor = [UIColor yellowColor];
     
-    self.dateFormatter = [[NSDateFormatter alloc] init];
+    _dateFormatter = [[NSDateFormatter alloc] init];
     
     if ([self.dataSource respondsToSelector:@selector(dateFormatForClockView:)]) {
         self.dateFormatter.dateFormat = [self.dataSource dateFormatForClockView:self];
@@ -114,7 +115,7 @@ typedef enum : NSUInteger {
         self.dateFormatter.dateFormat = NFAnalogClockDefaultDateFormat();
     }
     
-    self.clockDate = [NSDate date];
+    _clockDate = [NSDate date];
     NSString *currentDateTime = [self.dateFormatter stringFromDate:self.clockDate];
     [self setDateTimeLabel:currentDateTime];
 
@@ -146,8 +147,10 @@ typedef enum : NSUInteger {
     CGContextSetAlpha(context, self.alpha);
     CGContextSetFillColorWithColor(context, self.backgroundColor.CGColor);
 
-    // draw hour dial pins
-    [self drawHourDialAtCenterPoint:canvasCenterPoint];
+    // draw dial pins
+    if (self.enableHourDial) {
+        [self drawHourDialAtCenterPoint:canvasCenterPoint];
+    }
     
     if (self.enableMinDial) {
         [self drawMinuteDialAtCenterPoint:canvasCenterPoint];
@@ -174,6 +177,12 @@ typedef enum : NSUInteger {
 }
 
 #pragma mark - Setters
+
+- (void)setEnableHourDial:(BOOL)enableHourDial {
+    _enableHourDial = enableHourDial;
+    
+    [self setNeedsDisplay];
+}
 
 - (void)setEnableMinDial:(BOOL)enableMinDial {
     _enableMinDial = enableMinDial;
