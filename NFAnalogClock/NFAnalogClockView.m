@@ -542,6 +542,11 @@ typedef enum : NSUInteger {
             CGFloat hour = truncf(fullHours);
             CGFloat minute = roundf((fullHours - hour) * 60);
             
+            if (minute == 60) {
+                hour += 1;
+                minute = 0;
+            }
+
             self.currentHour = hour;
             self.currentMinute = minute;
 
