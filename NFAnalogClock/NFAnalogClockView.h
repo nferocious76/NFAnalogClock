@@ -68,9 +68,11 @@
 @property (nonatomic) BOOL enableSecDial;
 @property (nonatomic) BOOL enableClockLabel;
 @property (nonatomic) BOOL enableDateTimeLabel;
+@property (nonatomic) BOOL enableGradient;
 
 @property (nonatomic) BOOL showMinHand;
 @property (nonatomic) BOOL showSecHand;
+
 
 @property (nonatomic, strong) UIFont *hourLabelFont;
 @property (nonatomic, strong) UIColor *hourLabelColor;
@@ -83,6 +85,14 @@
 @property (nonatomic) CGFloat currentHour;
 @property (nonatomic) CGFloat currentMinute;
 @property (nonatomic) CGFloat currentSecond;
+
+/**
+ * Array format: [ (id)[UIColor blueColor].CGColor ]
+ */
+@property (nonatomic, strong) NSArray<UIColor *> *gradientColors;
+@property (nonatomic, strong) NSArray<NSNumber *> *gradientLocations;
+
+#pragma mark - Protocols
 
 @property (nonatomic, weak) id <NFAnalogClockViewDelegate>delegate;
 @property (nonatomic, weak) id <NFAnalogClockViewDataSource>dataSource;

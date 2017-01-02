@@ -72,6 +72,8 @@ typedef enum : NSUInteger {
     _enableClockLabel = YES;
     _showMinHand = YES;
     _showSecHand = YES;
+    _enableGradient = NO;
+    
     self.enableDateTimeLabel = YES;
 
     // hour
@@ -116,6 +118,10 @@ typedef enum : NSUInteger {
     }else{
         self.dateFormatter.dateFormat = NFAnalogClockDefaultDateFormat();
     }
+    
+    self.gradientLocations = @[@(0), @(1)];
+    self.gradientColors = @[(id)[UIColor blueColor].CGColor,
+                            (id)[UIColor yellowColor].CGColor];
     
     _clockDate = [NSDate date];
     NSString *currentDateTime = [self.dateFormatter stringFromDate:self.clockDate];
@@ -210,6 +216,12 @@ typedef enum : NSUInteger {
     [self setNeedsDisplay];
 }
 
+- (void)setEnableGradient:(BOOL)enableGradient {
+    _enableGradient = enableGradient;
+    
+    [self setNeedsDisplay];
+}
+
 - (void)setShowMinHand:(BOOL)showMinHand {
     _showMinHand = showMinHand;
     
@@ -264,7 +276,12 @@ typedef enum : NSUInteger {
 /** Clock Dials */
 
 - (void)drawHourDialAtCenterPoint:(CGPoint)center {
-    
+    if (self.enableGradient) {
+        for (CALayer *layer in [self.layer sublayers]) {
+            [layer removeFromSuperlayer];
+        }
+    }
+
     CGFloat angleCorrection = ToRadians(30 * 3); // angle correction start at angle 270°, default at 0°
     for (int i = 0; i < 12; i++) {
         
@@ -275,7 +292,11 @@ typedef enum : NSUInteger {
         [self.hourDialColor setFill];
         [self.hourDialColor setStroke];
         
-        [self drawPinAtStartPoint:startPoint endPoint:endPoint width:self.hourDialWidth capStype:kCGLineCapSquare];
+        if (self.enableGradient) {
+            [self drawGradientPinAtStartPoint:startPoint endPoint:endPoint width:self.hourDialWidth capStype:kCGLineCapSquare];
+        }else{
+            [self drawPinAtStartPoint:startPoint endPoint:endPoint width:self.hourDialWidth capStype:kCGLineCapSquare];
+        }
     }
 }
 
@@ -323,6 +344,26 @@ typedef enum : NSUInteger {
     [path setLineCapStyle:capStype];
     [path fill];
     [path stroke];
+}
+
+- (void)drawGradientPinAtStartPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint width:(CGFloat)width capStype:(CGLineCap)capStype {
+    
+    CAGradientLayer* gradientLayer = [[CAGradientLayer alloc] init];
+    gradientLayer.frame = self.bounds;
+    gradientLayer.colors = self.gradientColors;
+    gradientLayer.locations = self.gradientLocations;
+    
+    CGFloat square = width / 2;
+    CGRect maskRect = CGRectMake(startPoint.x - square, startPoint.y, width, self.hourDialLength);
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:maskRect cornerRadius:0];
+    
+    CAShapeLayer* mask = [[CAShapeLayer alloc] init];
+    mask.frame = self.bounds;
+    mask.path = maskPath.CGPath;
+    mask.fillColor = [UIColor blackColor].CGColor;
+    gradientLayer.mask = mask;
+    
+    [self.layer addSublayer:gradientLayer];
 }
 
 /** Clock Label */

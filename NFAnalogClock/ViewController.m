@@ -37,6 +37,7 @@
     self.clockView.enableClockLabel = NO;
     self.clockView.clockFaceColor = [UIColor whiteColor];
     self.clockView.showSecHand = NO;
+    self.clockView.enableGradient = YES;
     
     self.clockView.hourDialWidth = 15;
     self.clockView.hourDialLength = 25;
