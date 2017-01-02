@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "NFTime.h"
 
-@class NFAnalogClockView;
+#pragma mark - Protocols
 
+@class NFAnalogClockView;
 @protocol NFAnalogClockViewDataSource <NSObject>
 
 @required
@@ -29,7 +30,7 @@
 
 @interface NFAnalogClockView : UIControl
 
-#pragma mark - Clock Design
+#pragma mark - Clock's Design
 
 // hour
 @property (nonatomic, strong) UIColor *hourDialColor;
@@ -60,15 +61,16 @@
 
 @property (nonatomic, strong) NSDate *clockDate;
 
-#pragma mark - Clock Face
-
-// clock's radius
+#pragma mark - Clock's Face
 
 @property (nonatomic) BOOL enableHourDial;
 @property (nonatomic) BOOL enableMinDial;
 @property (nonatomic) BOOL enableSecDial;
 @property (nonatomic) BOOL enableClockLabel;
 @property (nonatomic) BOOL enableDateTimeLabel;
+
+@property (nonatomic) BOOL showMinHand;
+@property (nonatomic) BOOL showSecHand;
 
 @property (nonatomic, strong) UIFont *hourLabelFont;
 @property (nonatomic, strong) UIColor *hourLabelColor;
@@ -82,11 +84,12 @@
 @property (nonatomic) CGFloat currentMinute;
 @property (nonatomic) CGFloat currentSecond;
 
-@property (nonatomic, strong) NSString *dateTimeLabel;
-
 @property (nonatomic, weak) id <NFAnalogClockViewDelegate>delegate;
 @property (nonatomic, weak) id <NFAnalogClockViewDataSource>dataSource;
 
+#pragma mark - Setters
+
+@property (nonatomic, strong) NSString *dateTimeLabel;
 
 #pragma mark - Initializer
 

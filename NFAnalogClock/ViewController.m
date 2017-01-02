@@ -29,6 +29,18 @@
     
     self.clockView.delegate = self;
     
+    self.clockView.backgroundColor = [UIColor whiteColor];
+    
+    self.clockView.enableSecDial = NO;
+    self.clockView.enableDateTimeLabel = NO;
+    self.clockView.enableMinDial = NO;
+    self.clockView.enableClockLabel = NO;
+    self.clockView.clockFaceColor = [UIColor whiteColor];
+    self.clockView.showSecHand = NO;
+    
+    self.clockView.hourDialWidth = 15;
+    self.clockView.hourDialLength = 25;
+    
     [self.hourInputField addTarget:self action:@selector(textFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
     [self.minuteInputField addTarget:self action:@selector(textFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
     [self.secondInputField addTarget:self action:@selector(textFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
@@ -73,7 +85,7 @@
 
 - (void)clockView:(NFAnalogClockView *)clockView didUpdateTime:(NFTime *)time {
     
-    NSLog(@"%@", [time timeToString]);
+    //NSLog(@"%@", [time timeToString]);
 }
 
 @end

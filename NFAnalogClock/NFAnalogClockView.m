@@ -60,9 +60,9 @@ typedef enum : NSUInteger {
     
     self.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5];
     
-    _currentHour = 0;
-    _currentMinute = 0;
-    _currentSecond = 0;
+    _currentHour = 11;
+    _currentMinute = 59;
+    _currentSecond = 59;
     
     _dateTimeCanvasPercent = 0.20;
     
@@ -70,6 +70,8 @@ typedef enum : NSUInteger {
     _enableMinDial = YES;
     _enableSecDial = YES;
     _enableClockLabel = YES;
+    _showMinHand = YES;
+    _showSecHand = YES;
     self.enableDateTimeLabel = YES;
 
     // hour
@@ -79,7 +81,7 @@ typedef enum : NSUInteger {
     _hourDialWidth = 2;
     _hourDialLength = 10;
     _hourHandLength = self.radius * 0.7;
-    _hourHandWidth = 3;
+    _hourHandWidth = 5;
     
     // minutes
     _minDialColor = [[UIColor greenColor] colorWithAlphaComponent:0.8];
@@ -88,7 +90,7 @@ typedef enum : NSUInteger {
     _minDialWidth = 1.5;
     _minDialLength = 5;
     _minHandLength = self.radius * 0.9;
-    _minHandWidth = 2;
+    _minHandWidth = 4;
     
     // seconds
     _secDialColor = [[UIColor blueColor] colorWithAlphaComponent:0.6];
@@ -97,7 +99,7 @@ typedef enum : NSUInteger {
     _secDialWidth = 1;
     _secDialLength = 2.5;
     _secHandLength = self.radius * 0.95;
-    _secHandWidth = 1;
+    _secHandWidth = 3;
     
     _hourLabelFont = [UIFont systemFontOfSize:12];
     _hourLabelColor = [UIColor blackColor];
@@ -166,8 +168,14 @@ typedef enum : NSUInteger {
     
     // clock's hand
     [self drawClockHourHandAtCenterPoint:canvasCenterPoint hour:self.currentHour];
-    [self drawClockMinHandAtCenterPoint:canvasCenterPoint minute:self.currentMinute];
-    [self drawClockSecHandAtCenterPoint:canvasCenterPoint second:self.currentSecond];
+    
+    if (self.showMinHand) {
+        [self drawClockMinHandAtCenterPoint:canvasCenterPoint minute:self.currentMinute];
+    }
+    
+    if (self.showSecHand) {
+        [self drawClockSecHandAtCenterPoint:canvasCenterPoint second:self.currentSecond];
+    }
     
     if (self.enableDateTimeLabel) {
         [self drawClockDateTimeLabel:self.dateTimeLabel];
@@ -198,6 +206,18 @@ typedef enum : NSUInteger {
 
 - (void)setEnableClockLabel:(BOOL)enableClockLabel {
     _enableClockLabel = enableClockLabel;
+    
+    [self setNeedsDisplay];
+}
+
+- (void)setShowMinHand:(BOOL)showMinHand {
+    _showMinHand = showMinHand;
+    
+    [self setNeedsDisplay];
+}
+
+- (void)setShowSecHand:(BOOL)showSecHand {
+    _showSecHand = showSecHand;
     
     [self setNeedsDisplay];
 }
@@ -400,16 +420,18 @@ typedef enum : NSUInteger {
     return canvasCenterPoint;
 }
 
-#pragma mark - Touches
+#pragma mark - Control Touches
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [touch preciseLocationInView:self];
     
-    if ([self isTouchPointValid:touchLocation forClockHand:Minute]) {
-        self.activeClockHand = Minute;
-        
-        [self stopTime];
-        return YES;
+    if (self.showMinHand) {
+        if ([self isTouchPointValid:touchLocation forClockHand:Minute]) {
+            self.activeClockHand = Minute;
+            
+            [self stopTime];
+            return YES;
+        }
     }
     
     if ([self isTouchPointValid:touchLocation forClockHand:Hour]) {
@@ -419,19 +441,23 @@ typedef enum : NSUInteger {
         return YES;
     }
     
-    if ([self isTouchPointValid:touchLocation forClockHand:Second]) {
-        self.activeClockHand = Second;
-        
-        [self stopTime];
-        return YES;
+    if (self.showSecHand) {
+        if ([self isTouchPointValid:touchLocation forClockHand:Second]) {
+            self.activeClockHand = Second;
+            
+            [self stopTime];
+            return YES;
+        }
     }
     
     return NO;
 }
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    CGPoint touchLocation = [touch preciseLocationInView:self];
-    [self calculateAngleForClockHand:self.activeClockHand atTouchPoint:touchLocation];
+    CGPoint touchPoint = [touch preciseLocationInView:self];
+    CGPoint prevTouchPoint = [touch precisePreviousLocationInView:self];
+    
+    [self calculateAngleForClockHand:self.activeClockHand atTouchPoint:touchPoint prevTouchPoint:prevTouchPoint];
     
     NFTime *time = [self updateClock];
     if ([self.delegate respondsToSelector:@selector(clockView:didUpdateTime:)]) {
@@ -442,20 +468,25 @@ typedef enum : NSUInteger {
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    CGPoint touchPoint = [touch preciseLocationInView:self];
+    CGPoint prevTouchPoint = [touch precisePreviousLocationInView:self];
     
-    CGPoint touchLocation = [touch preciseLocationInView:self];
-    NSLog(@"Tracking ended at: %@", NSStringFromCGPoint(touchLocation));
+    [self calculateAngleForClockHand:self.activeClockHand atTouchPoint:touchPoint prevTouchPoint:prevTouchPoint];
     
     NFTime *time = [self updateClock];
     if ([self.delegate respondsToSelector:@selector(clockView:didUpdateTime:)]) {
         [self.delegate clockView:self didUpdateTime:time];
     }
+    
+    NSLog(@"Tracking ended at: %@", NSStringFromCGPoint(touchPoint));
 }
 
 - (void)cancelTrackingWithEvent:(UIEvent *)event {
     
     NSLog(@"Tracking canceled: %@", event);
 }
+
+#pragma mark - Calculations
 
 - (BOOL)isTouchPointValid:(CGPoint)touchPoint forClockHand:(ClockHand)hand {
     // canvas center
@@ -523,7 +554,33 @@ typedef enum : NSUInteger {
     }
 }
 
-- (void)calculateAngleForClockHand:(ClockHand)hand atTouchPoint:(CGPoint)touchPoint {
+- (CGFloat)prevFullRotationTimeRatioForPreviousTouchPoint:(CGPoint)prevTouchPoint angleCorrection:(CGFloat)angleCorrection fullCircleAngle:(CGFloat)fullCircleAngle {
+    // canvas center
+    CGPoint canvasCenterPoint = [self  canvasCenterWithDateTimeEnabled:self.enableDateTimeLabel];
+    struct PolarCoordinate polar = DecartToPolar(canvasCenterPoint, prevTouchPoint);
+    
+    CGFloat angle = (polar.angle + angleCorrection);
+    CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
+    
+    CGFloat percentRatio = calculatedAngle / fullCircleAngle;
+    CGFloat fullCircleDegrees = 360 * percentRatio;
+    CGFloat timeRatio = fullCircleDegrees / 6;
+    
+    CGFloat minute = roundf(timeRatio);
+    return minute;
+}
+
+- (BOOL)isRotationClockwiseForTouchPoint:(CGPoint)touchPoint prevTouchPoint:(CGPoint)prevTouchPoint {
+    // canvas center
+    CGPoint canvasCenterPoint = [self  canvasCenterWithDateTimeEnabled:self.enableDateTimeLabel];
+    struct PolarCoordinate polar = DecartToPolar(canvasCenterPoint, touchPoint);
+    struct PolarCoordinate prevPolar = DecartToPolar(canvasCenterPoint, prevTouchPoint);
+    
+    CGFloat value = polar.angle - prevPolar.angle;
+    return value > 0;
+}
+
+- (void)calculateAngleForClockHand:(ClockHand)hand atTouchPoint:(CGPoint)touchPoint prevTouchPoint:(CGPoint)prevTouchPoint {
     // canvas center
     CGPoint canvasCenterPoint = [self  canvasCenterWithDateTimeEnabled:self.enableDateTimeLabel];
     struct PolarCoordinate polar = DecartToPolar(canvasCenterPoint, touchPoint);
@@ -555,8 +612,21 @@ typedef enum : NSUInteger {
 
         case Minute: {
             CGFloat minute = roundf(timeRatio);
-            self.currentMinute = minute;
+            CGFloat prevMinute = [self prevFullRotationTimeRatioForPreviousTouchPoint:prevTouchPoint angleCorrection:angleCorrection fullCircleAngle:fullCircleAngle];
 
+            if (prevMinute == 0 && minute >= 59) {
+                self.currentHour -= 1;
+            }else if (minute == 0 && prevMinute >= 59) {
+                self.currentHour += 1;
+            }
+            
+            if (self.currentHour < 0) {
+                self.currentHour = 11;
+            }else if (self.currentHour > 12) {
+                self.currentHour = 1;
+            }
+            
+            self.currentMinute = minute;
         } break;
 
         case Second: {
