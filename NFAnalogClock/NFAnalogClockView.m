@@ -119,7 +119,7 @@ typedef enum : NSUInteger {
         self.dateFormatter.dateFormat = NFAnalogClockDefaultDateFormat();
     }
     
-    self.gradientLocations = @[@(0), @(1)];
+    self.gradientLocations = @[@(0.15), @(0.85)];
     self.gradientColors = @[(id)[UIColor blueColor].CGColor,
                             (id)[UIColor yellowColor].CGColor];
     
@@ -347,7 +347,9 @@ typedef enum : NSUInteger {
 }
 
 - (void)drawGradientPinAtStartPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint width:(CGFloat)width capStype:(CGLineCap)capStype {
-    
+    // Test
+    [self drawPinAtStartPoint:startPoint endPoint:endPoint width:width capStype:capStype];
+
     CAGradientLayer* gradientLayer = [[CAGradientLayer alloc] init];
     gradientLayer.frame = self.bounds;
     gradientLayer.colors = self.gradientColors;
@@ -364,6 +366,58 @@ typedef enum : NSUInteger {
     gradientLayer.mask = mask;
     
     [self.layer addSublayer:gradientLayer];
+
+    // test layer
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path setLineWidth:width];
+    
+    if (startPoint.y == endPoint.y) {
+        CGPoint sPoint = CGPointMake(startPoint.x, startPoint.y - square);
+        CGPoint sPoint2 = CGPointMake(startPoint.x, startPoint.y + square);
+        CGPoint ePoint = CGPointMake(endPoint.x, endPoint.y + square);
+        CGPoint ePoint2 = CGPointMake(endPoint.x, endPoint.y - square);
+        
+        [path moveToPoint:sPoint];
+        [path addLineToPoint:sPoint2];
+        [path addLineToPoint:ePoint];
+        [path addLineToPoint:ePoint2];
+    }else if (startPoint.x == endPoint.x) {
+        CGPoint sPoint = CGPointMake(startPoint.x - square, startPoint.y);
+        CGPoint sPoint2 = CGPointMake(startPoint.x + square, startPoint.y);
+        CGPoint ePoint = CGPointMake(endPoint.x + square, endPoint.y);
+        CGPoint ePoint2 = CGPointMake(endPoint.x - square, endPoint.y);
+        
+        [path moveToPoint:sPoint];
+        [path addLineToPoint:sPoint2];
+        [path addLineToPoint:ePoint];
+        [path addLineToPoint:ePoint2];
+    }/*else{
+        CGPoint sPoint = CGPointMake(startPoint.x - square, startPoint.y - square);
+        CGPoint sPoint2 = CGPointMake(startPoint.x + square, startPoint.y + square);
+        CGPoint ePoint = CGPointMake(endPoint.x + square, endPoint.y + square);
+        CGPoint ePoint2 = CGPointMake(endPoint.x - square, endPoint.y - square);
+        
+        [path moveToPoint:sPoint];
+        [path addLineToPoint:sPoint2];
+        [path addLineToPoint:ePoint];
+        [path addLineToPoint:ePoint2];
+    }*/
+    [path closePath];
+
+    CAGradientLayer* gradientLayer2 = [[CAGradientLayer alloc] init];
+    gradientLayer2.frame = self.bounds;
+    gradientLayer2.colors = @[(id)[UIColor greenColor].CGColor,
+                              (id)[UIColor redColor].CGColor];
+    gradientLayer2.locations = self.gradientLocations;
+
+    CAShapeLayer* mask2 = [[CAShapeLayer alloc] init];
+    mask2.frame = self.bounds;
+    mask2.path = path.CGPath;
+    mask2.fillColor = [UIColor blackColor].CGColor;
+    gradientLayer2.mask = mask2;
+    
+    [self.layer addSublayer:gradientLayer2];
+
 }
 
 /** Clock Label */
