@@ -73,7 +73,6 @@
 @property (nonatomic) BOOL showMinHand;
 @property (nonatomic) BOOL showSecHand;
 
-
 @property (nonatomic, strong) UIFont *hourLabelFont;
 @property (nonatomic, strong) UIColor *hourLabelColor;
 
@@ -111,5 +110,7 @@
 
 - (void)setCurrentClockTimeWithHour:(CGFloat)hour minute:(CGFloat)minute second:(CGFloat)second;
 - (void)refreshClockView;
+
+- (void)drawGradientHourDialLayer;
 
 @end
