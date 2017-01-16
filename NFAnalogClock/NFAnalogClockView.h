@@ -86,6 +86,8 @@
 @property (nonatomic) CGFloat currentMinute;
 @property (nonatomic) CGFloat currentSecond;
 
+@property (nonatomic, strong) NSString *clockPeriod;
+
 /**
  * Array format: [ (id)[UIColor blueColor].CGColor ]
  */
@@ -111,5 +113,7 @@
 
 - (void)setCurrentClockTimeWithHour:(CGFloat)hour minute:(CGFloat)minute second:(CGFloat)second;
 - (void)refreshClockView;
+
+- (void)drawGradientHourDialLayer;
 
 @end

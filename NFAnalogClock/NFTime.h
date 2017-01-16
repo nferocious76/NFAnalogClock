@@ -11,7 +11,7 @@
 
 @interface NFTime : NSObject
 
-- (instancetype)initWithHour:(CGFloat)hour minute:(CGFloat)minute second:(CGFloat)second formatter:(NSDateFormatter *)formatter;
+- (instancetype)initWithHour:(CGFloat)hour minute:(CGFloat)minute second:(CGFloat)second period:(NSString *)period formatter:(NSDateFormatter *)formatter;
 
 @property (nonatomic, readonly) CGFloat hour;
 @property (nonatomic, readonly) CGFloat minute;

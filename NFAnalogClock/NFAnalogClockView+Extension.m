@@ -52,7 +52,7 @@
 }
 
 - (NFTime *)updateClock {
-    NFTime *time = [[NFTime alloc] initWithHour:self.currentHour minute:self.currentMinute second:self.currentSecond formatter:self.dateFormatter];
+    NFTime *time = [[NFTime alloc] initWithHour:self.currentHour minute:self.currentMinute second:self.currentSecond period:self.clockPeriod formatter:self.dateFormatter];
 
     if (self.enableDateTimeLabel) {
         NSDate *clockDate = [time currentDate];;

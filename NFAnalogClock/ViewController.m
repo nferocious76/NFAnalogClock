@@ -32,7 +32,7 @@
     self.clockView.backgroundColor = [UIColor whiteColor];
     
     self.clockView.enableSecDial = NO;
-    self.clockView.enableDateTimeLabel = NO;
+    self.clockView.enableDateTimeLabel = YES;
     self.clockView.enableMinDial = NO;
     self.clockView.enableClockLabel = NO;
     self.clockView.clockFaceColor = [UIColor whiteColor];
@@ -52,6 +52,12 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self.clockView drawGradientHourDialLayer];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {

@@ -25,12 +25,13 @@
     return nil;
 }
 
-- (instancetype)initWithHour:(CGFloat)hour minute:(CGFloat)minute second:(CGFloat)second formatter:(NSDateFormatter *)formatter {
+- (instancetype)initWithHour:(CGFloat)hour minute:(CGFloat)minute second:(CGFloat)second period:(NSString *)period formatter:(NSDateFormatter *)formatter {
     
     if (self = [super init]) {
         _hour = hour;
         _minute = minute;
         _second = second;
+        _period = period;
         
         _dateFormatter = formatter;
     }
@@ -65,8 +66,10 @@
     NSDate *dateNow = [NSDate date];
     
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [calendar components:(NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear | NSCalendarUnitTimeZone | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond) fromDate:dateNow];
-    [components setHour:self.hour];
+    NSDateComponents *components = [calendar components:(NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear | NSCalendarUnitTimeZone) fromDate:dateNow]; //  | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond
+    
+    CGFloat h = [self.period isEqualToString:@"PM"] ? self.hour + 12 : self.hour;
+    [components setHour:h];
     [components setMinute:self.minute];
     [components setSecond:self.second];
     
