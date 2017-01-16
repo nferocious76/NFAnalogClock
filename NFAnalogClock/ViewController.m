@@ -16,7 +16,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *minuteInputField;
 @property (weak, nonatomic) IBOutlet UITextField *secondInputField;
 
-
 @property (weak, nonatomic) IBOutlet NFAnalogClockView *clockView;
 
 @end
@@ -45,9 +44,13 @@
     [self.hourInputField addTarget:self action:@selector(textFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
     [self.minuteInputField addTarget:self action:@selector(textFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
     [self.secondInputField addTarget:self action:@selector(textFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
-
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self.clockView drawGradientHourDialLayer];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

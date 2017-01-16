@@ -73,7 +73,6 @@
 @property (nonatomic) BOOL showMinHand;
 @property (nonatomic) BOOL showSecHand;
 
-
 @property (nonatomic, strong) UIFont *hourLabelFont;
 @property (nonatomic, strong) UIColor *hourLabelColor;
 

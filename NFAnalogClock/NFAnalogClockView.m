@@ -128,7 +128,6 @@ typedef enum : NSUInteger {
     _clockDate = [NSDate date];
     NSString *currentDateTime = [self.dateFormatter stringFromDate:self.clockDate];
     [self setDateTimeLabel:currentDateTime];
-    
 }
 
 #pragma mark - Drawing
@@ -285,7 +284,7 @@ typedef enum : NSUInteger {
         CGFloat angle = ToRadians(30 * i) - angleCorrection;
         CGPoint startPoint = PolarToDecart(center, self.radius - self.hourDialLength, angle);
         CGPoint endPoint = PolarToDecart(center, self.radius, angle);
-        
+
         [self.hourDialColor setFill];
         [self.hourDialColor setStroke];
         
@@ -331,10 +330,12 @@ typedef enum : NSUInteger {
     
     UIBezierPath *path = [UIBezierPath bezierPath];
     [path setLineWidth:width];
+    [path setLineCapStyle:capStype];
+
     [path moveToPoint:startPoint];
     [path addLineToPoint:endPoint];
+    [path closePath];
     
-    [path setLineCapStyle:capStype];
     [path fill];
     [path stroke];
 }
@@ -372,7 +373,7 @@ typedef enum : NSUInteger {
     CGFloat p4 = ToRadians(30 * (dialPos - 0.119)) - angleCorrection;
     CGPoint sp4 = PolarToDecart(center, self.radius - self.hourDialLength, p4);
     
-    CAGradientLayer* gradientLayer = [[CAGradientLayer alloc] init];
+    CAGradientLayer *gradientLayer = [[CAGradientLayer alloc] init];
     gradientLayer.frame = self.bounds;
     gradientLayer.colors = self.gradientColors;
     gradientLayer.locations = self.gradientLocations;
@@ -387,7 +388,7 @@ typedef enum : NSUInteger {
     [maskPath addLineToPoint:sp4];
     [maskPath closePath];
     
-    CAShapeLayer* mask = [[CAShapeLayer alloc] init];
+    CAShapeLayer *mask = [[CAShapeLayer alloc] init];
     mask.frame = self.bounds;
     mask.path = maskPath.CGPath;
     mask.fillColor = [UIColor blackColor].CGColor;
