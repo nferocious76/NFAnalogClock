@@ -626,22 +626,6 @@ typedef enum : NSUInteger {
     }
 }
 
-- (CGFloat)prevFullRotationTimeRatioForPreviousTouchPoint:(CGPoint)prevTouchPoint angleCorrection:(CGFloat)angleCorrection fullCircleAngle:(CGFloat)fullCircleAngle {
-    // canvas center
-    CGPoint canvasCenterPoint = [self  canvasCenterWithDateTimeEnabled:self.enableDateTimeLabel];
-    struct PolarCoordinate polar = DecartToPolar(canvasCenterPoint, prevTouchPoint);
-    
-    CGFloat angle = (polar.angle + angleCorrection);
-    CGFloat calculatedAngle = angle >= fullCircleAngle ? angle - fullCircleAngle : angle;
-    
-    CGFloat percentRatio = calculatedAngle / fullCircleAngle;
-    CGFloat fullCircleDegrees = 360 * percentRatio;
-    CGFloat timeRatio = fullCircleDegrees / 6;
-    
-    CGFloat minute = roundf(timeRatio);
-    return minute;
-}
-
 - (BOOL)isRotationClockwiseForTouchPoint:(CGPoint)touchPoint prevTouchPoint:(CGPoint)prevTouchPoint {
     // canvas center
     CGPoint canvasCenterPoint = [self  canvasCenterWithDateTimeEnabled:self.enableDateTimeLabel];
