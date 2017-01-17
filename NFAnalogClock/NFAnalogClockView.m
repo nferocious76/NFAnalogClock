@@ -9,6 +9,7 @@
 #import "NFAnalogClockView.h"
 #import "NFMathGeometry.h"
 #import "NFAnalogClockView+Extension.h"
+#import "NFAnalogGradientLayer.h"
 
 typedef enum : NSUInteger {
     Hour,
@@ -341,6 +342,11 @@ typedef enum : NSUInteger {
 }
 
 - (void)drawGradientHourDialLayer {
+    for (CALayer *layer in [self.layer sublayers]) {
+        if ([layer isKindOfClass:[NFAnalogGradientLayer class]]) {
+            [layer removeFromSuperlayer];
+        }
+    }
     
     _enableHourDial = NO;
     self.enableGradient = YES;
@@ -373,7 +379,7 @@ typedef enum : NSUInteger {
     CGFloat p4 = ToRadians(30 * (dialPos - 0.119)) - angleCorrection;
     CGPoint sp4 = PolarToDecart(center, self.radius - self.hourDialLength, p4);
     
-    CAGradientLayer *gradientLayer = [[CAGradientLayer alloc] init];
+    NFAnalogGradientLayer *gradientLayer = [[NFAnalogGradientLayer alloc] init];
     gradientLayer.frame = self.bounds;
     gradientLayer.colors = self.gradientColors;
     gradientLayer.locations = self.gradientLocations;
